@@ -1,0 +1,17 @@
+.container {
+  min-height: 100vh;
+  padding: 120px 80px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 60px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
