@@ -1,31 +1,14 @@
-import { useEffect, useState } from 'react';
-import styles from './ThemeToggle.module.css';
+import { Sun, Moon } from "lucide-react";
+import { useTheme } from "../../contexts/ThemeContext";
+import styles from "./ThemeToggle.module.css";
 
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
-      document.body.classList.add('dark');
-      setDark(true);
-    }
-  }, []);
-
-  function toggleTheme() {
-    if (dark) {
-      document.body.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    }
-    setDark(!dark);
-  }
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button className={styles.toggle} onClick={toggleTheme}>
-      {dark ? 'Light Mode' : 'Dark Mode'}
+      {theme === "dark" ? <Moon size={16} /> : <Sun size={16} />}
+      {theme === "dark" ? "Escuro" : "Claro"}
     </button>
   );
 }

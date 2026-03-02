@@ -1,32 +1,34 @@
 import api from "./api";
 
-export async function getBudgets() {
+export type Budget = {
+  id: string;
+  name: string;
+  limit: number;
+  totalSpent: number;
+  remaining: number;
+};
+
+export async function getBudgets(): Promise<Budget[]> {
   const response = await api.get("/budgets");
   return response.data;
 }
 
-export async function deleteBudget(id: string) {
-  await api.delete(`/budgets/${id}`);
-}
-
-export async function createBudget(name: string, limit: number) {
-  const response = await api.post("/budgets", {
-    name,
-    limit,
-  });
-
+export async function createBudget(data: {
+  name: string;
+  limit: number;
+}): Promise<Budget> {
+  const response = await api.post("/budgets", data);
   return response.data;
 }
 
 export async function updateBudget(
   id: string,
-  name: string,
-  limit: number
-) {
-  const response = await api.put(`/budgets/${id}`, {
-    name,
-    limit,
-  });
-
+  data: { name: string; limit: number }
+): Promise<Budget> {
+  const response = await api.put(`/budgets/${id}`, data);
   return response.data;
+}
+
+export async function deleteBudget(id: string): Promise<void> {
+  await api.delete(`/budgets/${id}`);
 }

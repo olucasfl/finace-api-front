@@ -1,4 +1,5 @@
 import styles from "./BudgetCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   id: string;
@@ -19,25 +20,34 @@ export default function BudgetCard({
   onDelete,
   onEdit,
 }: Props) {
+  const navigate = useNavigate();
+
   const percentage =
     limit > 0 ? Math.min((totalSpent / limit) * 100, 100) : 0;
 
   return (
-    <div className={`${styles.card} glass`}>
+    <div
+      className={`${styles.card} glass`}
+      onClick={() => navigate(`/budgets/${id}`)}
+    >
       <div className={styles.header}>
         <h2>{name}</h2>
-        <div className={styles.actions}>
+        <div
+          className={styles.actions}
+          onClick={(e) => e.stopPropagation()}
+        >
           <button onClick={() => onEdit(id)}>✏️</button>
           <button onClick={() => onDelete(id)}>🗑️</button>
         </div>
       </div>
 
       <div className={styles.amount}>
-        R$ {remaining.toFixed(2)}
+        R$ {Number(remaining ?? 0).toFixed(2)}
       </div>
 
       <div className={styles.meta}>
-        Limite: R$ {limit.toFixed(2)} • Usado: {percentage.toFixed(1)}%
+        Limite: R$ {limit.toFixed(2)} • Usado:{" "}
+        {percentage.toFixed(1)}%
       </div>
 
       <div className={styles.progressBar}>

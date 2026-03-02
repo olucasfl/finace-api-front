@@ -1,25 +1,34 @@
 import { useState } from "react";
-import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
-import styles from "./Login.module.css";
+import styles from "./Register.module.css";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
+import api from "../../services/api";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
 
     try {
-      await login(email, password);
-      navigate("/dashboard");
-    } catch {
-      alert("Credenciais inválidas");
+      await api.post("/users", {
+        name,
+        email,
+        password,
+        confirmPassword,
+      });
+
+      alert("Conta criada com sucesso!");
+      navigate("/login");
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Erro ao registrar");
     } finally {
       setLoading(false);
     }
@@ -31,10 +40,21 @@ export default function Login() {
       <div className={styles.card}>
         <h1 className={styles.logo}>Smart Finance</h1>
         <p className={styles.subtitle}>
-          Controle inteligente das suas finanças
+          Crie sua conta
         </p>
 
-        <form onSubmit={handleLogin} className={styles.form}>
+        <form onSubmit={handleRegister} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <input
+              type="text"
+              placeholder=" "
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <label>Nome</label>
+          </div>
+
           <div className={styles.inputGroup}>
             <input
               type="email"
@@ -57,14 +77,27 @@ export default function Login() {
             <label>Senha</label>
           </div>
 
+          <div className={styles.inputGroup}>
+            <input
+              type="password"
+              placeholder=" "
+              value={confirmPassword}
+              onChange={(e) =>
+                setConfirmPassword(e.target.value)
+              }
+              required
+            />
+            <label>Confirmar senha</label>
+          </div>
+
           <button type="submit" disabled={loading}>
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? "Criando..." : "Criar conta"}
           </button>
         </form>
 
         <div className={styles.switch}>
-          Ainda não possui uma conta?{" "}
-          <span onClick={() => navigate("/register")}>
+          Já possui uma conta?{" "}
+          <span onClick={() => navigate("/login")}>
             Clique aqui
           </span>
         </div>

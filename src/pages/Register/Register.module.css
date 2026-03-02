@@ -179,57 +179,26 @@ button {
   box-shadow: 0 15px 35px rgba(37,99,235,0.5);
 }
 
-/* ================= SWITCH LINK (LOGIN) ================= */
-
 .switch {
-  margin-top: 32px;
+  margin-top: 24px;
   font-size: 14px;
-  opacity: 0.8;
-  position: relative;
-}
-
-/* Linha divisória elegante acima */
-.switch::before {
-  content: "";
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 1px;
-  opacity: 0.2;
-}
-
-/* DARK */
-:root[data-theme="dark"] .switch::before {
-  background: white;
-}
-
-/* LIGHT */
-:root[data-theme="light"] .switch::before {
-  background: #0f172a;
+  opacity: 0.85;
 }
 
 .switch span {
   font-weight: 700;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: 0.2s ease;
 }
 
-/* DARK */
 :root[data-theme="dark"] .switch span {
-  background: linear-gradient(90deg, #d4af37, #f1c75b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #d4af37;
 }
 
-/* LIGHT */
 :root[data-theme="light"] .switch span {
-  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #1e3a8a;
 }
 
 .switch span:hover {
-  opacity: 0.8;
+  text-decoration: underline;
 }
