@@ -36,7 +36,11 @@ export default function Register() {
 
   return (
     <div className={styles.wrapper}>
-      <ThemeToggle />
+
+        <div className={styles.topButtons}>
+            <ThemeToggle />
+        </div>
+
       <div className={styles.card}>
         <h1 className={styles.logo}>Smart Finance</h1>
         <p className={styles.subtitle}>

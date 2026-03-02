@@ -202,3 +202,15 @@ button {
 .switch span:hover {
   text-decoration: underline;
 }
+
+.topButtons {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  z-index: 1000;
+}
