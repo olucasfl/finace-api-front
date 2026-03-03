@@ -121,19 +121,27 @@
 /* ================= EXPENSE LIST ================= */
 
 .expenseList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
 }
 
 .expenseItem {
-  padding: 24px;
-  border-radius: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+
+  padding: 18px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(20px);
-  transition: 0.3s ease;
+
+  transition: 0.2s ease;
+}
+
+.expenseItem:hover {
+  transform: translateY(-4px);
 }
 
 /* DARK → igual summary */
@@ -148,35 +156,30 @@
   color: white;
 }
 
-.expenseItem:hover {
-  transform: translateY(-4px);
-}
-
 .expenseInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  margin-bottom: 12px;
 }
 
 .expenseTitle {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .expenseDate {
-  font-size: 13px;
+  font-size: 12px;
   opacity: 0.6;
+  margin-top: 4px;
 }
 
 .right {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 18px;
 }
 
-/* ================= AMOUNT ================= */
-
 .amount {
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 15px;
 }
 
 /* DARK → azul */

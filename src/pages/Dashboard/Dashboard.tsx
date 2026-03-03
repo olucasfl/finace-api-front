@@ -155,6 +155,78 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
+              {/* MODAL CRIAR */}
+      {creating && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Novo Budget</h2>
+
+            <input
+              placeholder="Nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Limite"
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+            />
+
+            <div className={styles.modalActions}>
+              <button
+                className={styles.cancel}
+                onClick={() => setCreating(false)}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className={styles.save}
+                onClick={handleCreate}
+              >
+                Criar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+            {editingBudget && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Editar Budget</h2>
+
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <input
+              type="number"
+              value={limit}
+              onChange={(e) => setLimit(e.target.value)}
+            />
+
+            <div className={styles.modalActions}>
+              <button
+                className={styles.cancel}
+                onClick={() => setEditingBudget(null)}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className={styles.save}
+                onClick={handleUpdate}
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
