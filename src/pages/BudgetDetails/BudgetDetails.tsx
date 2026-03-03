@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./BudgetDetails.module.css";
 import api from "../../services/api";
@@ -9,7 +9,12 @@ import {
   updateExpense,
 } from "../../services/expensesService";
 import type { Expense } from "../../services/expensesService";
-import { Pencil, Trash2, ArrowLeft } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  ArrowLeft,
+  SlidersHorizontal,
+} from "lucide-react";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 
 type Budget = {
@@ -32,6 +37,25 @@ export default function BudgetDetails() {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
 
+  // 🔥 FILTROS
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterName, setFilterName] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const [minValue, setMinValue] = useState("");
+  const [maxValue, setMaxValue] = useState("");
+
+  function handleClearFilters() {
+  setFilterName("");
+  setFilterDate("");
+  setMinValue("");
+  setMaxValue("");
+  setPage(1);
+}
+
+  // 🔥 PAGINAÇÃO
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 9;
+
   async function loadBudget() {
     const response = await api.get(`/budgets/${id}`);
     setBudget(response.data);
@@ -42,10 +66,67 @@ export default function BudgetDetails() {
     setExpenses(data);
   }
 
+
+
   useEffect(() => {
     loadBudget();
     loadExpenses();
   }, [id]);
+
+  // 🔥 CONTADOR DE FILTROS ATIVOS
+  const activeFiltersCount = [
+    filterName,
+    filterDate,
+    minValue,
+    maxValue,
+  ].filter(Boolean).length;
+
+  // 🔥 FILTRO
+  const filteredExpenses = useMemo(() => {
+    return expenses.filter((expense) => {
+      const matchesName = expense.title
+        .toLowerCase()
+        .includes(filterName.toLowerCase());
+
+      const matchesDate = filterDate
+        ? new Date(expense.createdAt)
+            .toISOString()
+            .slice(0, 10) === filterDate
+        : true;
+
+      const matchesMin = minValue
+        ? expense.amount >= Number(minValue)
+        : true;
+
+      const matchesMax = maxValue
+        ? expense.amount <= Number(maxValue)
+        : true;
+
+      return (
+        matchesName &&
+        matchesDate &&
+        matchesMin &&
+        matchesMax
+      );
+    });
+  }, [expenses, filterName, filterDate, minValue, maxValue]);
+
+  const totalPages =
+    filteredExpenses.length === 0
+      ? 1
+      : Math.ceil(filteredExpenses.length / itemsPerPage);
+
+  const paginatedExpenses = filteredExpenses.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  // 🔥 GARANTE QUE A PAGINAÇÃO NUNCA QUEBRE
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [filteredExpenses, totalPages, page]);
 
   if (!budget) return <div>Carregando...</div>;
 
@@ -56,12 +137,10 @@ export default function BudgetDetails() {
 
   return (
     <div className={styles.container}>
-      
       <div className={styles.topButtons}>
         <ThemeToggle />
       </div>
 
-      {/* BOTÃO VOLTAR */}
       <button
         className={styles.backButton}
         onClick={() => navigate("/dashboard")}
@@ -71,6 +150,17 @@ export default function BudgetDetails() {
       </button>
 
       <h1 className={styles.title}>{budget.name}</h1>
+
+      <div className={styles.analyticsWrapper}>
+        <button
+          className={styles.analyticsButton}
+          onClick={() =>
+            navigate(`/budgets/${budget.id}/analytics`)
+          }
+        >
+          📊 Ver Analytics
+        </button>
+      </div>
 
       {/* SUMMARY */}
       <div className={styles.summaryWrapper}>
@@ -100,7 +190,6 @@ export default function BudgetDetails() {
       {/* CREATE */}
       <div className={styles.section}>
         <h2>Adicionar gasto</h2>
-
         <CreateExpenseForm
           budgetId={budget.id}
           onCreated={() => {
@@ -112,11 +201,33 @@ export default function BudgetDetails() {
 
       {/* LISTA */}
       <div className={styles.section}>
-        <h2>Gastos</h2>
+        <div className={styles.sectionHeader}>
+          <h2>Gastos</h2>
+
+          <button
+            className={`${styles.filterButton} ${
+              activeFiltersCount > 0
+                ? styles.filterActive
+                : ""
+            }`}
+            onClick={() => setShowFilters(true)}
+          >
+            <SlidersHorizontal size={18} />
+            Filtros
+            {activeFiltersCount > 0 && (
+              <span className={styles.filterBadge}>
+                {activeFiltersCount}
+              </span>
+            )}
+          </button>
+        </div>
 
         <div className={styles.expenseList}>
-          {expenses.map((expense) => (
-            <div key={expense.id} className={styles.expenseItem}>
+          {paginatedExpenses.map((expense) => (
+            <div
+              key={expense.id}
+              className={styles.expenseItem}
+            >
               <div className={styles.expenseInfo}>
                 <div className={styles.expenseTitle}>
                   {expense.title}
@@ -124,7 +235,7 @@ export default function BudgetDetails() {
                 <div className={styles.expenseDate}>
                   {new Date(
                     expense.createdAt
-                  ).toLocaleDateString()}
+                  ).toLocaleString("pt-BR")}
                 </div>
               </div>
 
@@ -133,16 +244,15 @@ export default function BudgetDetails() {
                   R$ {expense.amount.toFixed(2)}
                 </div>
 
-                <div
-                  className={styles.actions}
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <div className={styles.actions}>
                   <button
                     className={styles.editBtn}
                     onClick={() => {
                       setEditingExpense(expense);
                       setTitle(expense.title);
-                      setAmount(expense.amount.toString());
+                      setAmount(
+                        expense.amount.toString()
+                      );
                     }}
                   >
                     <Pencil size={18} />
@@ -158,7 +268,10 @@ export default function BudgetDetails() {
                       )
                         return;
 
-                      await deleteExpense(budget.id, expense.id);
+                      await deleteExpense(
+                        budget.id,
+                        expense.id
+                      );
                       loadBudget();
                       loadExpenses();
                     }}
@@ -170,9 +283,93 @@ export default function BudgetDetails() {
             </div>
           ))}
         </div>
+
+        {/* PAGINAÇÃO */}
+        <div className={styles.pagination}>
+          <button
+            onClick={() =>
+              setPage((p) => Math.max(p - 1, 1))
+            }
+            disabled={page === 1}
+          >
+            ←
+          </button>
+
+          <span>{page}</span>
+
+          <button
+            onClick={() =>
+              setPage((p) =>
+                Math.min(p + 1, totalPages)
+              )
+            }
+            disabled={page >= totalPages}
+          >
+            →
+          </button>
+        </div>
       </div>
 
-      {/* MODAL EDIT */}
+      {/* MODAL FILTROS */}
+      {showFilters && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Filtros</h2>
+
+            <input
+              placeholder="Nome"
+              value={filterName}
+              onChange={(e) =>
+                setFilterName(e.target.value)
+              }
+            />
+
+            <input
+              type="date"
+              value={filterDate}
+              onChange={(e) =>
+                setFilterDate(e.target.value)
+              }
+            />
+
+            <input
+              type="number"
+              placeholder="Valor mínimo"
+              value={minValue}
+              onChange={(e) =>
+                setMinValue(e.target.value)
+              }
+            />
+
+            <input
+              type="number"
+              placeholder="Valor máximo"
+              value={maxValue}
+              onChange={(e) =>
+                setMaxValue(e.target.value)
+              }
+            />
+
+            <div className={styles.modalActions}>
+              <button
+                className={styles.clearFilters}
+                onClick={handleClearFilters}
+              >
+                🔴 Limpar tudo
+              </button>
+
+              <button
+                className={styles.cancel}
+                onClick={() => setShowFilters(false)}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL EDITAR */}
       {editingExpense && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -183,7 +380,6 @@ export default function BudgetDetails() {
               onChange={(e) =>
                 setTitle(e.target.value)
               }
-              placeholder="Título"
             />
 
             <input
@@ -192,7 +388,6 @@ export default function BudgetDetails() {
               onChange={(e) =>
                 setAmount(e.target.value)
               }
-              placeholder="Valor"
             />
 
             <div className={styles.modalActions}>

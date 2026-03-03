@@ -423,3 +423,19 @@
 .logoutButton:hover {
   transform: translateY(-2px);
 }
+
+/* ================= LOGO DASHBOARD ================= */
+
+.dashboardLogo {
+  position: fixed;
+  top: 25px;
+  left: 40px;
+  width: 110px;
+  height: auto;
+  z-index: 1000;
+  transition: 0.3s ease;
+}
+
+.dashboardLogo:hover {
+  transform: scale(1.05);
+}

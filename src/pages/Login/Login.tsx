@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
@@ -10,6 +10,25 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [theme, setTheme] = useState(
+    document.documentElement.getAttribute("data-theme") || "light"
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "light";
+      setTheme(currentTheme);
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -27,13 +46,24 @@ export default function Login() {
 
   return (
     <div className={styles.wrapper}>
-
       <div className={styles.topButtons}>
         <ThemeToggle />
       </div>
 
       <div className={styles.card}>
+        {/* LOGO DINÂMICA */}
+        <img
+          src={
+            theme === "dark"
+              ? "/logo-SF-gold-512.png"
+              : "/logo-SF-blue-512.png"
+          }
+          alt="Smart Finance"
+          className={styles.loginLogo}
+        />
+
         <h1 className={styles.logo}>Smart Finance</h1>
+
         <p className={styles.subtitle}>
           Controle inteligente das suas finanças
         </p>

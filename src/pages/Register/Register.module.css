@@ -214,3 +214,17 @@ button {
 
   z-index: 1000;
 }
+
+/* ================= LOGO REGISTER ================= */
+
+.registerLogo {
+  width: 90px;
+  height: auto;
+  margin: 0 auto 20px auto;
+  display: block;
+  transition: 0.3s ease;
+}
+
+.registerLogo:hover {
+  transform: scale(1.05);
+}

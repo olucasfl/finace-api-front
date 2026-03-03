@@ -1,0 +1,133 @@
+.container {
+  min-height: 100vh;
+  padding: 60px;
+  transition: all 0.3s ease;
+}
+
+/* ================= TOPO ================= */
+
+.topButtons {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  z-index: 1000;
+}
+
+.backButton {
+  margin-bottom: 30px;
+  padding: 10px 22px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+/* ================= TÍTULOS ================= */
+
+.title {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: var(--text-primary);
+}
+
+.chartTitle {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+/* ================= MÉTRICAS ================= */
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.metricCard {
+  padding: 35px;
+  border-radius: 22px;
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-color);
+  transition: 0.3s;
+}
+
+.metricCard span {
+  font-size: 14px;
+  opacity: 0.7;
+  color: var(--text-secondary);
+}
+
+.metricCard h2 {
+  margin-top: 12px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ================= GRÁFICOS ================= */
+
+.chartCard {
+  margin-bottom: 50px;
+  padding: 35px;
+  border-radius: 22px;
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-color);
+  transition: 0.3s;
+}
+
+/* ================= TEMA CLARO ================= */
+
+[data-theme="light"] {
+  --background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --accent: #d4af37; /* dourado */
+}
+
+[data-theme="light"] .container {
+  background: var(--background);
+}
+
+[data-theme="light"] .metricCard,
+[data-theme="light"] .chartCard {
+  background: var(--card-bg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .backButton {
+  background: var(--accent);
+  color: #000;
+}
+
+/* ================= TEMA ESCURO ================= */
+
+[data-theme="dark"] {
+  --background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  --text-primary: #f3f4f6;
+  --text-secondary: #cbd5e1;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --card-bg: rgba(15, 23, 42, 0.75);
+  --accent: #ffd84d; /* dourado mais vivo */
+}
+
+[data-theme="dark"] .container {
+  background: var(--background);
+}
+
+[data-theme="dark"] .metricCard,
+[data-theme="dark"] .chartCard {
+  background: var(--card-bg);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .backButton {
+  background: var(--accent);
+  color: #000;
+}

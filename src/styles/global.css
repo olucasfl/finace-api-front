@@ -11,6 +11,12 @@ body {
   transition: 0.4s ease;
 }
 
+.logo {
+  width: 120px;      /* aumenta aqui */
+  height: auto;
+}
+
+
 /* ================= DARK THEME ================= */
 
 :root[data-theme="dark"] {

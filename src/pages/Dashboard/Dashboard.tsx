@@ -22,6 +22,25 @@ export default function Dashboard() {
   const [name, setName] = useState("");
   const [limit, setLimit] = useState("");
 
+  const [theme, setTheme] = useState(
+  document.documentElement.getAttribute("data-theme") || "light"
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "light";
+      setTheme(currentTheme);
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   async function loadBudgets() {
     const data = await getBudgets();
     setBudgets(data);
@@ -79,6 +98,16 @@ export default function Dashboard() {
           Logout
         </button>
       </div>
+
+      <img
+        src={
+          theme === "dark"
+            ? "/logo-SF-gold-512.png"
+            : "/logo-SF-blue-512.png"
+        }
+        alt="Smart Finance"
+        className={styles.dashboardLogo}
+      />
 
       <h1 className={styles.title}>Smart Finance</h1>
 

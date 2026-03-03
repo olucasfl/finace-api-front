@@ -245,3 +245,17 @@ button {
 
   z-index: 1000;
 }
+
+/* ================= LOGO LOGIN ================= */
+
+.loginLogo {
+  width: 90px;
+  height: auto;
+  margin: 0 auto 20px auto;
+  display: block;
+  transition: 0.3s ease;
+}
+
+.loginLogo:hover {
+  transform: scale(1.05);
+}

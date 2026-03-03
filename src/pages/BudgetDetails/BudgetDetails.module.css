@@ -542,3 +542,121 @@
 
   z-index: 1000;
 }
+
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.pagination button {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+.pagination button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pagination span {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+  color: white;
+  transition: 0.2s ease;
+}
+
+.filterButton:hover {
+  transform: translateY(-2px);
+}
+
+.clearFilters {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.clearFilters:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+}
+
+/* ================= ANALYTICS BUTTON ================= */
+
+.analyticsWrapper {
+  display: flex;
+  justify-content: center; /* CENTRALIZA */
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.analyticsButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 14px 28px;
+  border-radius: 40px;
+  border: none;
+
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* ===== TEMA CLARO ===== */
+
+[data-theme="light"] .analyticsButton {
+  background: linear-gradient(135deg, #d4af37, #f5d76e);
+  color: #000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== TEMA ESCURO ===== */
+
+[data-theme="dark"] .analyticsButton {
+  background: linear-gradient(135deg, #ffd84d, #d4af37);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(255, 216, 77, 0.35);
+}
+
+.analyticsButton:hover {
+  transform: translateY(-3px);
+}
