@@ -439,3 +439,72 @@
 .dashboardLogo:hover {
   transform: scale(1.05);
 }
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .container {
+    padding: 120px 20px 40px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  /* logo deixa de ser fixed */
+  .dashboardLogo {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: block;
+    margin: 0 auto 10px;
+    width: 70px;
+  }
+
+  /* botões deixam de ser fixed */
+  .topButtons {
+    position: relative;
+    top: auto;
+    right: auto;
+
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .logoutButton {
+    position: relative;
+    right: auto;
+    top: auto;
+  }
+
+  /* botão criar ocupa largura total */
+  .createButton {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  /* grid vira lista vertical */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* card ocupa tela toda */
+  .card {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .amount {
+    font-size: 22px;
+  }
+
+  .modal {
+    width: 90%;
+    padding: 25px;
+  }
+
+}

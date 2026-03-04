@@ -660,3 +660,107 @@
 .analyticsButton:hover {
   transform: translateY(-3px);
 }
+
+@media (max-width: 768px) {
+
+  .container {
+    padding: 120px 20px 40px;
+  }
+
+  /* TITLE */
+  .title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  /* SUMMARY CARD */
+  .summaryWrapper {
+    padding: 25px;
+  }
+
+  .summary {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .summaryItem h3 {
+    font-size: 18px;
+  }
+
+  .progressBar {
+    height: 10px;
+  }
+
+  /* FORM ADD EXPENSE */
+  .section form {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .section form input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .section form button {
+    width: 100%;
+  }
+
+  /* EXPENSE LIST */
+  .expenseList {
+    grid-template-columns: 1fr;
+  }
+
+  .expenseItem {
+    padding: 16px;
+  }
+
+  .expenseTitle {
+    font-size: 15px;
+  }
+
+  .amount {
+    font-size: 14px;
+  }
+
+  /* EDIT ROW */
+  .editRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .saveBtn {
+    width: 100%;
+  }
+
+  /* BACK BUTTON */
+  .backButton {
+    top: 20px;
+    left: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  /* TOP BUTTONS */
+  .topButtons {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  /* ANALYTICS BUTTON */
+  .analyticsButton {
+    width: 100%;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  /* MODAL */
+  .modal {
+    width: 90%;
+    padding: 25px;
+  }
+
+}

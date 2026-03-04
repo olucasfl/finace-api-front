@@ -151,17 +151,6 @@ export default function BudgetDetails() {
 
       <h1 className={styles.title}>{budget.name}</h1>
 
-      <div className={styles.analyticsWrapper}>
-        <button
-          className={styles.analyticsButton}
-          onClick={() =>
-            navigate(`/budgets/${budget.id}/analytics`)
-          }
-        >
-          📊 Ver Analytics
-        </button>
-      </div>
-
       {/* SUMMARY */}
       <div className={styles.summaryWrapper}>
         <div className={styles.summary}>
