@@ -18,24 +18,34 @@ export async function getExpenses(
 
 export async function createExpense(
   budgetId: string,
-  data: { title: string; amount: number }
+  data: {
+    title: string;
+    amount: number;
+    date?: string;
+  }
 ): Promise<Expense> {
   const response = await api.post(
     `/budgets/${budgetId}/expenses`,
     data
   );
+
   return response.data;
 }
 
 export async function updateExpense(
   budgetId: string,
   expenseId: string,
-  data: { title: string; amount: number }
+  data: {
+    title: string;
+    amount: number;
+    date?: string;
+  }
 ): Promise<Expense> {
   const response = await api.put(
     `/budgets/${budgetId}/expenses/${expenseId}`,
     data
   );
+
   return response.data;
 }
 

@@ -764,3 +764,35 @@
   }
 
 }
+
+.form input[type="date"]{
+  min-width:180px;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+.form{
+flex-direction:column;
+gap:16px;
+}
+
+.form input{
+width:100%;
+}
+
+.form button{
+width:100%;
+}
+
+.expenseList{
+grid-template-columns:1fr;
+}
+
+.summary{
+flex-direction:column;
+gap:20px;
+}
+
+}
