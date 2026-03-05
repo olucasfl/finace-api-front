@@ -18,14 +18,14 @@
 }
 
 /* DARK → título dourado */
-:root[data-theme="dark"] .title {
+body[data-theme="dark"] .title {
   background: linear-gradient(90deg, #d4af37, #f1c75b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* LIGHT → título azul */
-:root[data-theme="light"] .title {
+body[data-theme="light"] .title {
   background: linear-gradient(90deg, #1e3a8a, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -48,24 +48,24 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .createButton {
+body[data-theme="dark"] .createButton {
   background: linear-gradient(135deg, #d4af37, #f1c75b);
   color: #0f172a;
   box-shadow: 0 10px 25px rgba(212,175,55,0.35);
 }
 
-:root[data-theme="dark"] .createButton:hover {
+body[data-theme="dark"] .createButton:hover {
   transform: translateY(-3px);
 }
 
 /* LIGHT */
-:root[data-theme="light"] .createButton {
+body[data-theme="light"] .createButton {
   background: linear-gradient(135deg, #1e3a8a, #3b82f6);
   color: white;
   box-shadow: 0 10px 25px rgba(37,99,235,0.35);
 }
 
-:root[data-theme="light"] .createButton:hover {
+body[data-theme="light"] .createButton:hover {
   transform: translateY(-3px);
 }
 
@@ -92,7 +92,7 @@
 }
 
 /* DARK → dourado legível */
-:root[data-theme="dark"] .card {
+body[data-theme="dark"] .card {
   background: linear-gradient(135deg, #caa432, #e6c15a);
   border: 1px solid rgba(255,255,255,0.15);
   box-shadow: 0 15px 35px rgba(0,0,0,0.4);
@@ -100,7 +100,7 @@
 }
 
 /* LIGHT → azul profundo */
-:root[data-theme="light"] .card {
+body[data-theme="light"] .card {
   background: linear-gradient(135deg, #0f172a, #1e3a8a);
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 15px 35px rgba(15,23,42,0.35);
@@ -141,23 +141,23 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .editBtn {
+body[data-theme="dark"] .editBtn {
   background: linear-gradient(135deg, #1e3a8a, #3b82f6);
   color: white;
 }
 
-:root[data-theme="dark"] .deleteBtn {
+body[data-theme="dark"] .deleteBtn {
   background: rgba(0,0,0,0.2);
   color: #0f172a;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .editBtn {
+body[data-theme="light"] .editBtn {
   background: linear-gradient(135deg, #d4af37, #f1c75b);
   color: #0f172a;
 }
 
-:root[data-theme="light"] .deleteBtn {
+body[data-theme="light"] .deleteBtn {
   background: rgba(255,255,255,0.2);
   color: white;
 }
@@ -171,12 +171,12 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .amount {
+body[data-theme="dark"] .amount {
   color: #1e3a8a;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .amount {
+body[data-theme="light"] .amount {
   background: linear-gradient(90deg, #d4af37, #f1c75b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -189,11 +189,11 @@
   margin-bottom: 14px;
 }
 
-:root[data-theme="dark"] .meta {
+body[data-theme="dark"] .meta {
   color: #334155;
 }
 
-:root[data-theme="light"] .meta {
+body[data-theme="light"] .meta {
   color: rgba(255,255,255,0.7);
 }
 
@@ -205,21 +205,21 @@
   overflow: hidden;
 }
 
-:root[data-theme="dark"] .progressBar {
+body[data-theme="dark"] .progressBar {
   background: rgba(15,23,42,0.2);
 }
 
-:root[data-theme="dark"] .progress {
+body[data-theme="dark"] .progress {
   height: 100%;
   background: linear-gradient(90deg, #1e3a8a, #2563eb);
   transition: width 0.4s ease;
 }
 
-:root[data-theme="light"] .progressBar {
+body[data-theme="light"] .progressBar {
   background: rgba(255,255,255,0.2);
 }
 
-:root[data-theme="light"] .progress {
+body[data-theme="light"] .progress {
   height: 100%;
   background: linear-gradient(90deg, #d4af37, #f1c75b);
   transition: width 0.4s ease;
@@ -263,13 +263,13 @@
 }
 
 /* DARK → modal amarelo */
-:root[data-theme="dark"] .modal {
+body[data-theme="dark"] .modal {
   background: linear-gradient(135deg, #caa432, #e6c15a);
   color: #0f172a;
 }
 
 /* LIGHT → modal azul */
-:root[data-theme="light"] .modal {
+body[data-theme="light"] .modal {
   background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: white;
 }
@@ -293,13 +293,13 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .modal input {
+body[data-theme="dark"] .modal input {
   background: rgba(0, 0, 0, 0.15);
   color: #0f172a;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .modal input {
+body[data-theme="light"] .modal input {
   background: rgba(255, 255, 255, 0.15);
   color: white;
 }
@@ -329,23 +329,23 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .save {
+body[data-theme="dark"] .save {
   background: linear-gradient(135deg, #1e3a8a, #3b82f6);
   color: white;
 }
 
-:root[data-theme="dark"] .cancel {
+body[data-theme="dark"] .cancel {
   background: rgba(0, 0, 0, 0.15);
   color: #0f172a;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .save {
+body[data-theme="light"] .save {
   background: linear-gradient(135deg, #d4af37, #f1c75b);
   color: #0f172a;
 }
 
-:root[data-theme="light"] .cancel {
+body[data-theme="light"] .cancel {
   background: rgba(255, 255, 255, 0.15);
   color: white;
 }
@@ -372,8 +372,8 @@
 }
 
 /* vermelho para ambos temas */
-:root[data-theme="dark"] .logoutButton,
-:root[data-theme="light"] .logoutButton {
+body[data-theme="dark"] .logoutButton,
+body[data-theme="light"] .logoutButton {
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
   box-shadow: 0 10px 25px rgba(220,38,38,0.35);
@@ -413,8 +413,8 @@
   transition: 0.25s ease;
 }
 
-:root[data-theme="dark"] .logoutButton,
-:root[data-theme="light"] .logoutButton {
+body[data-theme="dark"] .logoutButton,
+body[data-theme="light"] .logoutButton {
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
   box-shadow: 0 8px 20px rgba(220,38,38,0.35);
@@ -525,11 +525,11 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .dateField label{
+body[data-theme="dark"] .dateField label{
   color:#d4af37;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .dateField label{
+body[data-theme="light"] .dateField label{
   color:#1e3a8a;
 }

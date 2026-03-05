@@ -21,14 +21,14 @@
 }
 
 /* 🌑 DARK → card azul profundo */
-:root[data-theme="dark"] .card {
+body[data-theme="dark"] .card {
   background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: #f8fafc;
   border: 1px solid rgba(255,255,255,0.1);
 }
 
 /* 🌟 LIGHT → card dourado */
-:root[data-theme="light"] .card {
+body[data-theme="light"] .card {
   background: linear-gradient(135deg, #caa432, #e6c15a);
   color: #0f172a;
   border: 1px solid rgba(255,255,255,0.2);
@@ -43,14 +43,14 @@
 }
 
 /* DARK → dourado */
-:root[data-theme="dark"] .logo {
+body[data-theme="dark"] .logo {
   background: linear-gradient(90deg, #d4af37, #f1c75b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* LIGHT → azul */
-:root[data-theme="light"] .logo {
+body[data-theme="light"] .logo {
   background: linear-gradient(90deg, #1e3a8a, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -87,13 +87,13 @@
 }
 
 /* DARK */
-:root[data-theme="dark"] .inputGroup input {
+body[data-theme="dark"] .inputGroup input {
   background: rgba(255,255,255,0.08);
   color: white;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .inputGroup input {
+body[data-theme="light"] .inputGroup input {
   background: rgba(255,255,255,0.35);
   color: #0f172a;
 }
@@ -109,12 +109,12 @@
 }
 
 /* DARK label */
-:root[data-theme="dark"] .inputGroup label {
+body[data-theme="dark"] .inputGroup label {
   color: rgba(255,255,255,0.6);
 }
 
 /* LIGHT label */
-:root[data-theme="light"] .inputGroup label {
+body[data-theme="light"] .inputGroup label {
   color: rgba(15,23,42,0.6);
 }
 
@@ -130,15 +130,15 @@
 }
 
 /* DARK floating */
-:root[data-theme="dark"] .inputGroup input:focus + label,
-:root[data-theme="dark"] .inputGroup input:not(:placeholder-shown) + label {
+body[data-theme="dark"] .inputGroup input:focus + label,
+body[data-theme="dark"] .inputGroup input:not(:placeholder-shown) + label {
   background: #0f172a;
   color: #d4af37;
 }
 
 /* LIGHT floating */
-:root[data-theme="light"] .inputGroup input:focus + label,
-:root[data-theme="light"] .inputGroup input:not(:placeholder-shown) + label {
+body[data-theme="light"] .inputGroup input:focus + label,
+body[data-theme="light"] .inputGroup input:not(:placeholder-shown) + label {
   background: #e6c15a;
   color: #1e3a8a;
 }
@@ -156,25 +156,25 @@ button {
 }
 
 /* DARK → botão dourado */
-:root[data-theme="dark"] button {
+body[data-theme="dark"] button {
   background: linear-gradient(135deg, #d4af37, #f1c75b);
   color: #0f172a;
   box-shadow: 0 10px 25px rgba(212,175,55,0.4);
 }
 
-:root[data-theme="dark"] button:hover {
+body[data-theme="dark"] button:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 35px rgba(212,175,55,0.5);
 }
 
 /* LIGHT → botão azul */
-:root[data-theme="light"] button {
+body[data-theme="light"] button {
   background: linear-gradient(135deg, #1e3a8a, #3b82f6);
   color: white;
   box-shadow: 0 10px 25px rgba(37,99,235,0.4);
 }
 
-:root[data-theme="light"] button:hover {
+body[data-theme="light"] button:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 35px rgba(37,99,235,0.5);
 }
@@ -201,12 +201,12 @@ button {
 }
 
 /* DARK */
-:root[data-theme="dark"] .switch::before {
+body[data-theme="dark"] .switch::before {
   background: white;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .switch::before {
+body[data-theme="light"] .switch::before {
   background: #0f172a;
 }
 
@@ -217,14 +217,14 @@ button {
 }
 
 /* DARK */
-:root[data-theme="dark"] .switch span {
+body[data-theme="dark"] .switch span {
   background: linear-gradient(90deg, #d4af37, #f1c75b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* LIGHT */
-:root[data-theme="light"] .switch span {
+body[data-theme="light"] .switch span {
   background: linear-gradient(90deg, #1e3a8a, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -2,13 +2,9 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8" />
-
   <link rel="icon" type="image/png" sizes="64x64" href="/logo-SF-blue-512" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Smart Finance</title>
@@ -16,17 +12,13 @@
   <!-- APPLY THEME BEFORE REACT LOADS -->
   <script>
     const theme = localStorage.getItem("theme") || "dark";
-    document.documentElement.setAttribute("data-theme", theme);
+    document.body.setAttribute("data-theme", theme);
   </script>
-
 </head>
 
 <body>
-
   <div id="root"></div>
-
   <script type="module" src="/src/main.tsx"></script>
-
 </body>
 
 </html>

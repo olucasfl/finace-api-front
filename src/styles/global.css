@@ -19,7 +19,7 @@ body {
 
 /* ================= DARK THEME ================= */
 
-:root[data-theme="dark"] {
+body[data-theme="dark"] {
   --bg-gradient:
     radial-gradient(
       circle at 20% 30%,
@@ -49,7 +49,7 @@ body {
 
 /* ================= LIGHT THEME ================= */
 
-:root[data-theme="light"] {
+body[data-theme="light"] {
   --bg-gradient:
     radial-gradient(circle at 30% 30%, rgba(30,58,138,0.15), transparent 40%),
     radial-gradient(circle at 70% 80%, rgba(15,23,42,0.1), transparent 40%),
