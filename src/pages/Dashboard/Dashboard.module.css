@@ -508,3 +508,28 @@
   }
 
 }
+
+/* ================= DATE FIELD ================= */
+
+.dateField{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:180px;
+}
+
+.dateField label{
+  font-size:12px;
+  font-weight:600;
+  opacity:0.7;
+}
+
+/* DARK */
+:root[data-theme="dark"] .dateField label{
+  color:#d4af37;
+}
+
+/* LIGHT */
+:root[data-theme="light"] .dateField label{
+  color:#1e3a8a;
+}

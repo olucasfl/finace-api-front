@@ -4,15 +4,18 @@ export type Expense = {
   id: string;
   title: string;
   amount: number;
+  expenseDate: string;
   createdAt: string;
 };
 
 export async function getExpenses(
   budgetId: string
 ): Promise<Expense[]> {
+
   const response = await api.get(
     `/budgets/${budgetId}/expenses`
   );
+
   return response.data;
 }
 
@@ -21,9 +24,10 @@ export async function createExpense(
   data: {
     title: string;
     amount: number;
-    date?: string;
+    expenseDate?: string;
   }
 ): Promise<Expense> {
+
   const response = await api.post(
     `/budgets/${budgetId}/expenses`,
     data
@@ -38,9 +42,10 @@ export async function updateExpense(
   data: {
     title: string;
     amount: number;
-    date?: string;
+    expenseDate?: string;
   }
 ): Promise<Expense> {
+
   const response = await api.put(
     `/budgets/${budgetId}/expenses/${expenseId}`,
     data
@@ -53,7 +58,9 @@ export async function deleteExpense(
   budgetId: string,
   expenseId: string
 ): Promise<void> {
+
   await api.delete(
     `/budgets/${budgetId}/expenses/${expenseId}`
   );
+
 }

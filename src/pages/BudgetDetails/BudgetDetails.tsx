@@ -53,10 +53,12 @@ export default function BudgetDetails() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
 
+    if (!title || !amount) return;
+
     await createExpense(id!, {
       title,
       amount: Number(amount),
-      date: date || undefined
+      expenseDate: date || undefined
     });
 
     setTitle("");
@@ -174,7 +176,7 @@ export default function BudgetDetails() {
 
               <div className={styles.expenseDate}>
                 {new Date(
-                  expense.createdAt
+                  expense.expenseDate
                 ).toLocaleDateString("pt-BR")}
               </div>
             </div>
@@ -193,7 +195,7 @@ export default function BudgetDetails() {
                     setTitle(expense.title);
                     setAmount(expense.amount.toString());
                     setDate(
-                      expense.createdAt.slice(0,10)
+                      expense.expenseDate.slice(0,10)
                     );
                   }}
                 >
@@ -204,7 +206,7 @@ export default function BudgetDetails() {
                   className={styles.deleteBtn}
                   onClick={async () => {
 
-                    if (!confirm("Excluir?")) return;
+                    if (!confirm("Excluir gasto?")) return;
 
                     await deleteExpense(
                       budget.id,
@@ -246,11 +248,17 @@ export default function BudgetDetails() {
               onChange={(e)=>setAmount(e.target.value)}
             />
 
-            <input
-              type="date"
-              value={date}
-              onChange={(e)=>setDate(e.target.value)}
-            />
+            <div className={styles.dateField}>
+
+              <label>Data (opcional)</label>
+
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+
+            </div>
 
             <div className={styles.modalActions}>
 
@@ -271,7 +279,7 @@ export default function BudgetDetails() {
                     {
                       title,
                       amount:Number(amount),
-                      date
+                      expenseDate: date
                     }
                   );
 
