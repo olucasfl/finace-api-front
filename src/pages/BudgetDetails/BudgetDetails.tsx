@@ -146,11 +146,17 @@ export default function BudgetDetails() {
             required
           />
 
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          <div className={styles.inputWrapper}>
+
+            <label>Data (opcional)</label>
+
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+
+          </div>
 
           <button type="submit">
             Adicionar
@@ -248,17 +254,11 @@ export default function BudgetDetails() {
               onChange={(e)=>setAmount(e.target.value)}
             />
 
-            <div className={styles.dateField}>
-
-              <label>Data (opcional)</label>
-
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-
-            </div>
+            <input
+              type="date"
+              value={date}
+              onChange={(e)=>setDate(e.target.value)}
+            />
 
             <div className={styles.modalActions}>
 
