@@ -1,18 +1,41 @@
-/* ================= RESET ================= */
+/* ================= BASE RESET ================= */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-    system-ui, sans-serif;
-  transition: 0.4s ease;
+
+  font-family: "Inter", -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", system-ui, sans-serif;
+
+  color: var(--text-primary);
+
+  transition:
+    background 0.4s ease,
+    color 0.3s ease;
 }
 
+/* ================= IMAGES ================= */
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ================= LOGO ================= */
+
 .logo {
-  width: 120px;      /* aumenta aqui */
+  width: 120px;
   height: auto;
 }
 
@@ -20,6 +43,7 @@ body {
 /* ================= DARK THEME ================= */
 
 body[data-theme="dark"] {
+
   --bg-gradient:
     radial-gradient(
       circle at 20% 30%,
@@ -47,9 +71,11 @@ body[data-theme="dark"] {
   --button-text: white;
 }
 
+
 /* ================= LIGHT THEME ================= */
 
 body[data-theme="light"] {
+
   --bg-gradient:
     radial-gradient(circle at 30% 30%, rgba(30,58,138,0.15), transparent 40%),
     radial-gradient(circle at 70% 80%, rgba(15,23,42,0.1), transparent 40%),
@@ -70,34 +96,62 @@ body[data-theme="light"] {
   --button-text: white;
 }
 
+
 /* ================= PAGE BACKGROUND ================= */
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
+
   background: var(--bg-gradient);
+
   z-index: -2;
 }
 
-/* floating glow */
+
+/* ================= FLOATING GLOW ================= */
 
 body::after {
   content: "";
   position: fixed;
+
   width: 800px;
   height: 800px;
-  background: radial-gradient(circle, rgba(212,175,55,0.15), transparent 70%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(212,175,55,0.15),
+      transparent 70%
+    );
+
   top: -200px;
   right: -200px;
+
   animation: floatBg 12s ease-in-out infinite;
+
   z-index: -1;
 }
 
+
 @keyframes floatBg {
-  0%,100% { transform: translateY(-40px); }
-  50% { transform: translateY(40px); }
+
+  0%,
+  100% {
+    transform: translateY(-40px);
+  }
+
+  50% {
+    transform: translateY(40px);
+  }
+
 }
+
+
+/* ================= INPUT FIXES ================= */
+
+/* remove spinner do number */
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -105,11 +159,9 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+/* firefox */
 
 input[type="number"] {
+  -moz-appearance: textfield;
   appearance: textfield;
 }

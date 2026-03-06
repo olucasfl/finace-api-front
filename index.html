@@ -2,23 +2,53 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" sizes="64x64" href="/logo-SF-blue-512" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Smart Finance</title>
 
+  <meta name="description" content="Smart Finance - Controle seus gastos e organize seu orçamento de forma simples." />
+
+  <link rel="icon" type="image/png" sizes="64x64" href="/logo-SF-blue-512.png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- APPLY THEME BEFORE REACT LOADS -->
   <script>
-    const theme = localStorage.getItem("theme") || "dark";
-    document.body.setAttribute("data-theme", theme);
+    (function () {
+
+      try {
+
+        const savedTheme = localStorage.getItem("theme");
+
+        const theme =
+          savedTheme === "light" || savedTheme === "dark"
+            ? savedTheme
+            : "dark";
+
+        window.__initialTheme = theme;
+
+      } catch {
+        window.__initialTheme = "dark";
+      }
+
+    })();
   </script>
+
 </head>
 
 <body>
+
+  <script>
+    document.body.setAttribute("data-theme", window.__initialTheme || "dark");
+  </script>
+
   <div id="root"></div>
+
   <script type="module" src="/src/main.tsx"></script>
+
 </body>
 
 </html>

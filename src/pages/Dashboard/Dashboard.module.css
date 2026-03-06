@@ -432,7 +432,7 @@ body[data-theme="light"] .logoutButton {
   left: 40px;
   width: 110px;
   height: auto;
-  z-index: 1000;
+  z-index: 10;
   transition: 0.3s ease;
 }
 

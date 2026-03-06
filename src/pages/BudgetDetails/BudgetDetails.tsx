@@ -28,39 +28,47 @@ export default function BudgetDetails() {
   const [budget, setBudget] = useState<Budget | null>(null);
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
+  /* CREATE STATES */
 
-  const [category, setCategory] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [newAmount, setNewAmount] = useState("");
+  const [newDate, setNewDate] = useState("");
+  const [newCategory, setNewCategory] = useState("");
+  const [newPaymentMethod, setNewPaymentMethod] = useState("");
+
+  /* EDIT STATES */
+
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+
+  const [editTitle, setEditTitle] = useState("");
+  const [editAmount, setEditAmount] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [editCategory, setEditCategory] = useState("");
+  const [editPaymentMethod, setEditPaymentMethod] = useState("");
 
   const categoryLabels: Record<string, string> = {
-  FOOD: "Alimentação",
-  TRANSPORT: "Transporte",
-  ENTERTAINMENT: "Lazer",
-  HEALTH: "Saúde",
-  BILLS: "Contas",
-  EDUCATION: "Educação",
-  TRAVEL: "Viagem",
-  RENT: "Aluguel",
-  SHOPPING: "Compras",
-  INVESTMENTS: "Investimentos",
-  SUBSCRIPTIONS: "Assinaturas",
-  OTHER: "Outro"
-};
+    FOOD: "Alimentação",
+    TRANSPORT: "Transporte",
+    ENTERTAINMENT: "Lazer",
+    HEALTH: "Saúde",
+    BILLS: "Contas",
+    EDUCATION: "Educação",
+    TRAVEL: "Viagem",
+    RENT: "Aluguel",
+    SHOPPING: "Compras",
+    INVESTMENTS: "Investimentos",
+    SUBSCRIPTIONS: "Assinaturas",
+    OTHER: "Outro"
+  };
 
-const paymentMethodLabels: Record<string, string> = {
-  PIX: "Pix",
-  CREDIT: "Crédito",
-  DEBIT: "Débito",
-  CASH: "Dinheiro",
-  TRANSFER: "Transferência",
-  OTHER: "Outro"
-};
-
-  const [editingExpense, setEditingExpense] =
-    useState<Expense | null>(null);
+  const paymentMethodLabels: Record<string, string> = {
+    PIX: "Pix",
+    CREDIT: "Crédito",
+    DEBIT: "Débito",
+    CASH: "Dinheiro",
+    TRANSFER: "Transferência",
+    OTHER: "Outro"
+  };
 
   async function loadBudget() {
     const response = await api.get(`/budgets/${id}`);
@@ -77,27 +85,29 @@ const paymentMethodLabels: Record<string, string> = {
     loadExpenses();
   }, [id]);
 
+  /* CREATE EXPENSE */
+
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!title || !amount || !category || !paymentMethod) {
+    if (!newTitle || !newAmount || !newCategory || !newPaymentMethod) {
       alert("Preencha todos os campos obrigatórios");
       return;
     }
 
     await createExpense(id!, {
-      title,
-      amount: Number(amount),
-      category,
-      paymentMethod,
-      expenseDate: date || undefined
+      title: newTitle,
+      amount: Number(newAmount),
+      category: newCategory,
+      paymentMethod: newPaymentMethod,
+      expenseDate: newDate || undefined
     });
 
-    setTitle("");
-    setAmount("");
-    setDate("");
-    setCategory("");
-    setPaymentMethod("");
+    setNewTitle("");
+    setNewAmount("");
+    setNewDate("");
+    setNewCategory("");
+    setNewPaymentMethod("");
 
     loadBudget();
     loadExpenses();
@@ -162,23 +172,20 @@ const paymentMethodLabels: Record<string, string> = {
       <div className={styles.section}>
         <h2>Adicionar gasto</h2>
 
-        <form
-          className={styles.form}
-          onSubmit={handleCreate}
-        >
+        <form className={styles.form} onSubmit={handleCreate}>
 
           <input
             placeholder="Título"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
             required
           />
 
           <input
             type="number"
             placeholder="Valor"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            value={newAmount}
+            onChange={(e) => setNewAmount(e.target.value)}
             required
           />
 
@@ -187,8 +194,8 @@ const paymentMethodLabels: Record<string, string> = {
 
             <input
               type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
             />
           </div>
 
@@ -196,8 +203,8 @@ const paymentMethodLabels: Record<string, string> = {
             <label>Categoria</label>
 
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
               required
             >
               <option value="">Selecione</option>
@@ -220,8 +227,8 @@ const paymentMethodLabels: Record<string, string> = {
             <label>Método de pagamento</label>
 
             <select
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              value={newPaymentMethod}
+              onChange={(e) => setNewPaymentMethod(e.target.value)}
               required
             >
               <option value="">Selecione</option>
@@ -246,10 +253,7 @@ const paymentMethodLabels: Record<string, string> = {
       <div className={styles.expenseList}>
         {expenses.map((expense) => (
 
-          <div
-            key={expense.id}
-            className={styles.expenseItem}
-          >
+          <div key={expense.id} className={styles.expenseItem}>
 
             <div>
 
@@ -283,17 +287,15 @@ const paymentMethodLabels: Record<string, string> = {
 
                     setEditingExpense(expense);
 
-                    setTitle(expense.title);
-                    setAmount(expense.amount.toString());
-
-                    setDate(
+                    setEditTitle(expense.title);
+                    setEditAmount(expense.amount.toString());
+                    setEditDate(
                       expense.expenseDate
                         ? expense.expenseDate.split("T")[0]
                         : ""
                     );
-
-                    setCategory(expense.category);
-                    setPaymentMethod(expense.paymentMethod);
+                    setEditCategory(expense.category);
+                    setEditPaymentMethod(expense.paymentMethod);
 
                   }}
                 >
@@ -306,10 +308,7 @@ const paymentMethodLabels: Record<string, string> = {
 
                     if (!confirm("Excluir gasto?")) return;
 
-                    await deleteExpense(
-                      budget.id,
-                      expense.id
-                    );
+                    await deleteExpense(budget.id, expense.id);
 
                     loadBudget();
                     loadExpenses();
@@ -338,28 +337,27 @@ const paymentMethodLabels: Record<string, string> = {
             <h2>Editar Gasto</h2>
 
             <input
-              value={title}
-              onChange={(e)=>setTitle(e.target.value)}
+              value={editTitle}
+              onChange={(e)=>setEditTitle(e.target.value)}
             />
 
             <input
               type="number"
-              value={amount}
-              onChange={(e)=>setAmount(e.target.value)}
+              value={editAmount}
+              onChange={(e)=>setEditAmount(e.target.value)}
             />
 
             <input
               type="date"
-              value={date}
-              onChange={(e)=>setDate(e.target.value)}
+              value={editDate}
+              onChange={(e)=>setEditDate(e.target.value)}
             />
 
             <select
-              value={category}
-              onChange={(e)=>setCategory(e.target.value)}
-              required
+              value={editCategory}
+              onChange={(e)=>setEditCategory(e.target.value)}
             >
-              <option value="">Selecione</option>
+              <option value="">Categoria</option>
               <option value="FOOD">Alimentação</option>
               <option value="TRANSPORT">Transporte</option>
               <option value="ENTERTAINMENT">Entretenimento</option>
@@ -375,10 +373,10 @@ const paymentMethodLabels: Record<string, string> = {
             </select>
 
             <select
-              value={paymentMethod}
-              onChange={(e)=>setPaymentMethod(e.target.value)}
+              value={editPaymentMethod}
+              onChange={(e)=>setEditPaymentMethod(e.target.value)}
             >
-              <option value="">Selecione</option>
+              <option value="">Método de pagamento</option>
               <option value="PIX">Pix</option>
               <option value="CREDIT">Crédito</option>
               <option value="DEBIT">Débito</option>
@@ -404,11 +402,11 @@ const paymentMethodLabels: Record<string, string> = {
                     budget.id,
                     editingExpense.id,
                     {
-                      title,
-                      amount:Number(amount),
-                      category,
-                      paymentMethod,
-                      expenseDate: date
+                      title: editTitle,
+                      amount: Number(editAmount),
+                      category: editCategory,
+                      paymentMethod: editPaymentMethod,
+                      expenseDate: editDate
                     }
                   );
 
