@@ -14,7 +14,9 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
 
-  const [showResend, setShowResend] = useState(false);
+  const [emailNotVerified, setEmailNotVerified] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
 
   const [theme, setTheme] = useState(
     document.documentElement.getAttribute("data-theme") || "light"
@@ -43,8 +45,10 @@ export default function Login() {
   async function handleLogin(e: React.FormEvent) {
 
     e.preventDefault();
+
     setLoading(true);
-    setShowResend(false);
+    setEmailNotVerified(false);
+    setResendSuccess(false);
 
     try {
 
@@ -58,9 +62,7 @@ export default function Login() {
 
       if (message === "Please verify your email before logging in") {
 
-        alert("Seu email ainda não foi verificado.");
-
-        setShowResend(true);
+        setEmailNotVerified(true);
 
       } else {
 
@@ -78,17 +80,23 @@ export default function Login() {
 
   async function resendEmail() {
 
+    setResendLoading(true);
+
     try {
 
       await api.post("/auth/resend-verification", {
         email
       });
 
-      alert("Email de verificação reenviado!");
+      setResendSuccess(true);
 
     } catch {
 
       alert("Erro ao reenviar email");
+
+    } finally {
+
+      setResendLoading(false);
 
     }
 
@@ -151,15 +159,45 @@ export default function Login() {
 
         </form>
 
-        {showResend && (
+        {emailNotVerified && (
 
-          <div style={{ marginTop: "20px", textAlign: "center" }}>
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "16px",
+              borderRadius: "10px",
+              background: "rgba(255, 193, 7, 0.15)",
+              border: "1px solid rgba(255,193,7,0.4)",
+              textAlign: "center"
+            }}
+          >
 
-            <p>Email não verificado.</p>
+            <p style={{ marginBottom: "10px", fontWeight: 500 }}>
+              Seu email ainda não foi verificado.
+            </p>
 
-            <button onClick={resendEmail}>
-              Reenviar email de verificação
-            </button>
+            {!resendSuccess && (
+              <button
+                onClick={resendEmail}
+                disabled={resendLoading}
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: "8px",
+                  border: "none",
+                  background: "#2563eb",
+                  color: "white",
+                  cursor: "pointer"
+                }}
+              >
+                {resendLoading ? "Enviando..." : "Reenviar email de verificação"}
+              </button>
+            )}
+
+            {resendSuccess && (
+              <p style={{ color: "#22c55e", fontWeight: 500 }}>
+                Email enviado novamente! Verifique sua caixa de entrada.
+              </p>
+            )}
 
           </div>
 
