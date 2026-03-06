@@ -3,25 +3,27 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Register.module.css";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import api from "../../services/api";
+import VerifyEmailModal from "../../components/VerifyEmailModal/VerifyEmailModal";
 
 export default function Register() {
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name,setName] = useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [confirmPassword,setConfirmPassword] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading,setLoading] = useState(false);
+  const [showModal,setShowModal] = useState(false);
 
-  const [theme, setTheme] = useState(
+  const [theme,setTheme] = useState(
     document.documentElement.getAttribute("data-theme") || "light"
   );
 
-  useEffect(() => {
+  useEffect(()=>{
 
-    const observer = new MutationObserver(() => {
+    const observer = new MutationObserver(()=>{
 
       const currentTheme =
         document.documentElement.getAttribute("data-theme") || "light";
@@ -30,38 +32,36 @@ export default function Register() {
 
     });
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
+    observer.observe(document.documentElement,{
+      attributes:true,
+      attributeFilter:["data-theme"]
     });
 
-    return () => observer.disconnect();
+    return ()=>observer.disconnect();
 
-  }, []);
+  },[]);
 
-  async function handleRegister(e: React.FormEvent) {
+  async function handleRegister(e:React.FormEvent){
 
     e.preventDefault();
     setLoading(true);
 
-    try {
+    try{
 
-      await api.post("/users", {
+      await api.post("/users",{
         name,
         email,
         password,
-        confirmPassword,
+        confirmPassword
       });
 
-      navigate("/check-email", {
-        state: { email }
-      });
+      setShowModal(true);
 
-    } catch (err: any) {
+    }catch(err:any){
 
       alert(err.response?.data?.message || "Erro ao registrar");
 
-    } finally {
+    }finally{
 
       setLoading(false);
 
@@ -69,11 +69,12 @@ export default function Register() {
 
   }
 
-  return (
+  return(
+
     <div className={styles.wrapper}>
 
       <div className={styles.topButtons}>
-        <ThemeToggle />
+        <ThemeToggle/>
       </div>
 
       <div className={styles.card}>
@@ -103,7 +104,7 @@ export default function Register() {
               type="text"
               placeholder=" "
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e)=>setName(e.target.value)}
               required
             />
             <label>Nome</label>
@@ -114,7 +115,7 @@ export default function Register() {
               type="email"
               placeholder=" "
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e)=>setEmail(e.target.value)}
               required
             />
             <label>Email</label>
@@ -125,7 +126,7 @@ export default function Register() {
               type="password"
               placeholder=" "
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e)=>setPassword(e.target.value)}
               required
             />
             <label>Senha</label>
@@ -136,9 +137,7 @@ export default function Register() {
               type="password"
               placeholder=" "
               value={confirmPassword}
-              onChange={(e) =>
-                setConfirmPassword(e.target.value)
-              }
+              onChange={(e)=>setConfirmPassword(e.target.value)}
               required
             />
             <label>Confirmar senha</label>
@@ -152,13 +151,21 @@ export default function Register() {
 
         <div className={styles.switch}>
           Já possui uma conta?{" "}
-          <span onClick={() => navigate("/login")}>
+          <span onClick={()=>navigate("/login")}>
             Clique aqui
           </span>
         </div>
 
       </div>
 
+      <VerifyEmailModal
+        email={email}
+        open={showModal}
+        onVerified={()=>navigate("/login")}
+      />
+
     </div>
+
   );
+
 }
