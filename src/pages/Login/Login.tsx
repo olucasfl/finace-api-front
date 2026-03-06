@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { login } from "../../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./Login.module.css";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import api from "../../services/api";
@@ -8,6 +8,7 @@ import api from "../../services/api";
 export default function Login() {
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +18,15 @@ export default function Login() {
   const [emailNotVerified, setEmailNotVerified] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+
+  const [resetEmail, setResetEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [resetToken, setResetToken] = useState("");
 
   const [theme, setTheme] = useState(
     document.documentElement.getAttribute("data-theme") || "light"
@@ -39,6 +49,18 @@ export default function Login() {
     });
 
     return () => observer.disconnect();
+
+  }, []);
+
+  // detectar token de reset na URL
+  useEffect(() => {
+
+    const token = searchParams.get("resetToken");
+
+    if (token) {
+      setResetToken(token);
+      setResetOpen(true);
+    }
 
   }, []);
 
@@ -84,9 +106,7 @@ export default function Login() {
 
     try {
 
-      await api.post("/auth/resend-verification", {
-        email
-      });
+      await api.post("/auth/resend-verification", { email });
 
       setResendSuccess(true);
 
@@ -97,6 +117,52 @@ export default function Login() {
     } finally {
 
       setResendLoading(false);
+
+    }
+
+  }
+
+  async function sendResetEmail() {
+
+    try {
+
+      await api.post("/auth/forgot-password", {
+        email: resetEmail
+      });
+
+      alert("Email de recuperação enviado!");
+
+      setForgotOpen(false);
+
+    } catch {
+
+      alert("Erro ao enviar email");
+
+    }
+
+  }
+
+  async function resetPassword() {
+
+    if (newPassword !== confirmPassword) {
+      alert("As senhas não coincidem");
+      return;
+    }
+
+    try {
+
+      await api.post("/auth/reset-password", {
+        token: resetToken,
+        password: newPassword
+      });
+
+      alert("Senha alterada com sucesso!");
+
+      setResetOpen(false);
+
+    } catch {
+
+      alert("Erro ao redefinir senha");
 
     }
 
@@ -159,6 +225,13 @@ export default function Login() {
 
         </form>
 
+        <div
+          style={{ marginTop: "10px", cursor: "pointer", fontSize: "14px" }}
+          onClick={() => setForgotOpen(true)}
+        >
+          Esqueci minha senha
+        </div>
+
         {emailNotVerified && (
 
           <div
@@ -180,14 +253,6 @@ export default function Login() {
               <button
                 onClick={resendEmail}
                 disabled={resendLoading}
-                style={{
-                  padding: "8px 14px",
-                  borderRadius: "8px",
-                  border: "none",
-                  background: "#2563eb",
-                  color: "white",
-                  cursor: "pointer"
-                }}
               >
                 {resendLoading ? "Enviando..." : "Reenviar email de verificação"}
               </button>
@@ -195,7 +260,7 @@ export default function Login() {
 
             {resendSuccess && (
               <p style={{ color: "#22c55e", fontWeight: 500 }}>
-                Email enviado novamente! Verifique sua caixa de entrada.
+                Email reenviado!
               </p>
             )}
 
@@ -211,6 +276,71 @@ export default function Login() {
         </div>
 
       </div>
+
+      {/* MODAL ESQUECI SENHA */}
+
+      {forgotOpen && (
+
+        <div className={styles.modalOverlay}>
+
+          <div className={styles.modal}>
+
+            <h2>Recuperar senha</h2>
+
+            <input
+              type="email"
+              placeholder="Digite seu email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+            />
+
+            <button onClick={sendResetEmail}>
+              Enviar email de recuperação
+            </button>
+
+            <button onClick={() => setForgotOpen(false)}>
+              Cancelar
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* MODAL RESET SENHA */}
+
+      {resetOpen && (
+
+        <div className={styles.modalOverlay}>
+
+          <div className={styles.modal}>
+
+            <h2>Redefinir senha</h2>
+
+            <input
+              type="password"
+              placeholder="Nova senha"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+
+            <input
+              type="password"
+              placeholder="Confirmar senha"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+
+            <button onClick={resetPassword}>
+              Atualizar senha
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );

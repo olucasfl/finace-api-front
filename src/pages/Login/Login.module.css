@@ -179,7 +179,30 @@ body[data-theme="light"] button:hover {
   box-shadow: 0 15px 35px rgba(37,99,235,0.5);
 }
 
-/* ================= SWITCH LINK (LOGIN) ================= */
+/* ================= FORGOT PASSWORD ================= */
+
+.forgotPassword {
+  margin-top: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+/* DARK */
+body[data-theme="dark"] .forgotPassword {
+  color: #d4af37;
+}
+
+/* LIGHT */
+body[data-theme="light"] .forgotPassword {
+  color: #1e3a8a;
+}
+
+.forgotPassword:hover {
+  opacity: 0.7;
+}
+
+/* ================= SWITCH LINK ================= */
 
 .switch {
   margin-top: 32px;
@@ -234,6 +257,8 @@ body[data-theme="light"] .switch span {
   opacity: 0.8;
 }
 
+/* ================= TOP BUTTONS ================= */
+
 .topButtons {
   position: fixed;
   top: 30px;
@@ -246,7 +271,7 @@ body[data-theme="light"] .switch span {
   z-index: 1000;
 }
 
-/* ================= LOGO LOGIN ================= */
+/* ================= LOGIN LOGO ================= */
 
 .loginLogo {
   width: 90px;
@@ -258,4 +283,60 @@ body[data-theme="light"] .switch span {
 
 .loginLogo:hover {
   transform: scale(1.05);
+}
+
+/* ================= MODAL ================= */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal {
+  width: 360px;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+}
+
+/* DARK modal */
+body[data-theme="dark"] .modal {
+  background: linear-gradient(135deg,#0f172a,#1e3a8a);
+  border:1px solid rgba(255,255,255,0.1);
+  color:white;
+}
+
+/* LIGHT modal */
+body[data-theme="light"] .modal {
+  background: linear-gradient(135deg,#caa432,#e6c15a);
+  border:1px solid rgba(255,255,255,0.2);
+  color:#0f172a;
+}
+
+.modal input {
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  outline:none;
+}
+
+/* DARK input */
+body[data-theme="dark"] .modal input{
+  background:rgba(255,255,255,0.08);
+  color:white;
+}
+
+/* LIGHT input */
+body[data-theme="light"] .modal input{
+  background:rgba(255,255,255,0.35);
+  color:#0f172a;
 }
