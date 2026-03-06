@@ -3,23 +3,32 @@ import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
+import api from "../../services/api";
 
 export default function Login() {
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
+
+  const [showResend, setShowResend] = useState(false);
 
   const [theme, setTheme] = useState(
     document.documentElement.getAttribute("data-theme") || "light"
   );
 
   useEffect(() => {
+
     const observer = new MutationObserver(() => {
+
       const currentTheme =
         document.documentElement.getAttribute("data-theme") || "light";
+
       setTheme(currentTheme);
+
     });
 
     observer.observe(document.documentElement, {
@@ -28,30 +37,72 @@ export default function Login() {
     });
 
     return () => observer.disconnect();
+
   }, []);
 
   async function handleLogin(e: React.FormEvent) {
+
     e.preventDefault();
     setLoading(true);
+    setShowResend(false);
 
     try {
+
       await login(email, password);
+
       navigate("/dashboard");
-    } catch {
-      alert("Credenciais inválidas");
+
+    } catch (err: any) {
+
+      const message = err.response?.data?.message;
+
+      if (message === "Please verify your email before logging in") {
+
+        alert("Seu email ainda não foi verificado.");
+
+        setShowResend(true);
+
+      } else {
+
+        alert("Credenciais inválidas");
+
+      }
+
     } finally {
+
       setLoading(false);
+
     }
+
+  }
+
+  async function resendEmail() {
+
+    try {
+
+      await api.post("/auth/resend-verification", {
+        email
+      });
+
+      alert("Email de verificação reenviado!");
+
+    } catch {
+
+      alert("Erro ao reenviar email");
+
+    }
+
   }
 
   return (
     <div className={styles.wrapper}>
+
       <div className={styles.topButtons}>
         <ThemeToggle />
       </div>
 
       <div className={styles.card}>
-        {/* LOGO DINÂMICA */}
+
         <img
           src={
             theme === "dark"
@@ -62,13 +113,16 @@ export default function Login() {
           className={styles.loginLogo}
         />
 
-        <h1 className={styles.logo}>Smart Finance</h1>
+        <h1 className={styles.logo}>
+          Smart Finance
+        </h1>
 
         <p className={styles.subtitle}>
           Controle inteligente das suas finanças
         </p>
 
         <form onSubmit={handleLogin} className={styles.form}>
+
           <div className={styles.inputGroup}>
             <input
               type="email"
@@ -94,7 +148,22 @@ export default function Login() {
           <button type="submit" disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}
           </button>
+
         </form>
+
+        {showResend && (
+
+          <div style={{ marginTop: "20px", textAlign: "center" }}>
+
+            <p>Email não verificado.</p>
+
+            <button onClick={resendEmail}>
+              Reenviar email de verificação
+            </button>
+
+          </div>
+
+        )}
 
         <div className={styles.switch}>
           Ainda não possui uma conta?{" "}
@@ -102,7 +171,9 @@ export default function Login() {
             Clique aqui
           </span>
         </div>
+
       </div>
+
     </div>
   );
 }
