@@ -63,10 +63,10 @@ export default function BudgetDetails() {
 
   const paymentMethodLabels: Record<string, string> = {
     PIX: "Pix",
-    CREDIT: "Crédito",
-    DEBIT: "Débito",
+    CREDIT_CARD: "Crédito",
+    DEBIT_CARD: "Débito",
     CASH: "Dinheiro",
-    TRANSFER: "Transferência",
+    BANK_TRANSFER: "Transferência",
     OTHER: "Outro"
   };
 
@@ -233,10 +233,10 @@ export default function BudgetDetails() {
             >
               <option value="">Selecione</option>
               <option value="PIX">Pix</option>
-              <option value="CREDIT">Crédito</option>
-              <option value="DEBIT">Débito</option>
+              <option value="CREDIT_CARD">Crédito</option>
+              <option value="DEBIT_CARD">Débito</option>
               <option value="CASH">Dinheiro</option>
-              <option value="TRANSFER">Transferência</option>
+              <option value="BANK_TRANSFER">Transferência</option>
               <option value="OTHER">Outro</option>
             </select>
           </div>
@@ -378,10 +378,10 @@ export default function BudgetDetails() {
             >
               <option value="">Método de pagamento</option>
               <option value="PIX">Pix</option>
-              <option value="CREDIT">Crédito</option>
-              <option value="DEBIT">Débito</option>
+              <option value="CREDIT_CARD">Crédito</option>
+              <option value="DEBIT_CARD">Débito</option>
               <option value="CASH">Dinheiro</option>
-              <option value="TRANSFER">Transferência</option>
+              <option value="BANK_TRANSFER">Transferência</option>
               <option value="OTHER">Outro</option>
             </select>
 
