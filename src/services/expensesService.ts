@@ -4,6 +4,8 @@ export type Expense = {
   id: string;
   title: string;
   amount: number;
+  category: string;
+  paymentMethod: string;
   expenseDate: string;
   createdAt: string;
 };
@@ -24,6 +26,8 @@ export async function createExpense(
   data: {
     title: string;
     amount: number;
+    category: string;
+    paymentMethod: string;
     expenseDate?: string;
   }
 ): Promise<Expense> {
@@ -42,6 +46,8 @@ export async function updateExpense(
   data: {
     title: string;
     amount: number;
+    category: string;
+    paymentMethod: string;
     expenseDate?: string;
   }
 ): Promise<Expense> {

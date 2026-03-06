@@ -32,6 +32,33 @@ export default function BudgetDetails() {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
 
+  const [category, setCategory] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+
+  const categoryLabels: Record<string, string> = {
+  FOOD: "Alimentação",
+  TRANSPORT: "Transporte",
+  ENTERTAINMENT: "Lazer",
+  HEALTH: "Saúde",
+  BILLS: "Contas",
+  EDUCATION: "Educação",
+  TRAVEL: "Viagem",
+  RENT: "Aluguel",
+  SHOPPING: "Compras",
+  INVESTMENTS: "Investimentos",
+  SUBSCRIPTIONS: "Assinaturas",
+  OTHER: "Outro"
+};
+
+const paymentMethodLabels: Record<string, string> = {
+  PIX: "Pix",
+  CREDIT: "Crédito",
+  DEBIT: "Débito",
+  CASH: "Dinheiro",
+  TRANSFER: "Transferência",
+  OTHER: "Outro"
+};
+
   const [editingExpense, setEditingExpense] =
     useState<Expense | null>(null);
 
@@ -53,17 +80,24 @@ export default function BudgetDetails() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!title || !amount) return;
+    if (!title || !amount || !category || !paymentMethod) {
+      alert("Preencha todos os campos obrigatórios");
+      return;
+    }
 
     await createExpense(id!, {
       title,
       amount: Number(amount),
+      category,
+      paymentMethod,
       expenseDate: date || undefined
     });
 
     setTitle("");
     setAmount("");
     setDate("");
+    setCategory("");
+    setPaymentMethod("");
 
     loadBudget();
     loadExpenses();
@@ -97,6 +131,7 @@ export default function BudgetDetails() {
 
       <div className={styles.summaryWrapper}>
         <div className={styles.summary}>
+
           <div>
             <span>Limite</span>
             <h3>R$ {budget.limit.toFixed(2)}</h3>
@@ -111,6 +146,7 @@ export default function BudgetDetails() {
             <span>Restante</span>
             <h3>R$ {budget.remaining.toFixed(2)}</h3>
           </div>
+
         </div>
 
         <div className={styles.progressBar}>
@@ -147,7 +183,6 @@ export default function BudgetDetails() {
           />
 
           <div className={styles.inputWrapper}>
-
             <label>Data (opcional)</label>
 
             <input
@@ -155,7 +190,48 @@ export default function BudgetDetails() {
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
+          </div>
 
+          <div className={styles.selectGroup}>
+            <label>Categoria</label>
+
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="">Selecione</option>
+              <option value="FOOD">Alimentação</option>
+              <option value="TRANSPORT">Transporte</option>
+              <option value="ENTERTAINMENT">Lazer</option>
+              <option value="HEALTH">Saúde</option>
+              <option value="BILLS">Contas</option>
+              <option value="EDUCATION">Educação</option>
+              <option value="TRAVEL">Viagem</option>
+              <option value="RENT">Aluguel</option>
+              <option value="SHOPPING">Compras</option>
+              <option value="INVESTMENTS">Investimentos</option>
+              <option value="SUBSCRIPTIONS">Assinaturas</option>
+              <option value="OTHER">Outro</option>
+            </select>
+          </div>
+
+          <div className={styles.selectGroup}>
+            <label>Método de pagamento</label>
+
+            <select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              required
+            >
+              <option value="">Selecione</option>
+              <option value="PIX">Pix</option>
+              <option value="CREDIT">Crédito</option>
+              <option value="DEBIT">Débito</option>
+              <option value="CASH">Dinheiro</option>
+              <option value="TRANSFER">Transferência</option>
+              <option value="OTHER">Outro</option>
+            </select>
           </div>
 
           <button type="submit">
@@ -176,18 +252,25 @@ export default function BudgetDetails() {
           >
 
             <div>
+
               <div className={styles.expenseTitle}>
                 {expense.title}
               </div>
 
               <div className={styles.expenseDate}>
                 {new Date(
-                  expense.expenseDate
+                  expense.expenseDate || expense.createdAt
                 ).toLocaleDateString("pt-BR")}
               </div>
+
+              <div className={styles.expenseMeta}>
+                {categoryLabels[expense.category]} • {paymentMethodLabels[expense.paymentMethod]}
+              </div>
+
             </div>
 
             <div className={styles.right}>
+
               <div className={styles.amount}>
                 R$ {expense.amount.toFixed(2)}
               </div>
@@ -197,12 +280,21 @@ export default function BudgetDetails() {
                 <button
                   className={styles.editBtn}
                   onClick={() => {
+
                     setEditingExpense(expense);
+
                     setTitle(expense.title);
                     setAmount(expense.amount.toString());
+
                     setDate(
-                      expense.expenseDate.slice(0,10)
+                      expense.expenseDate
+                        ? expense.expenseDate.split("T")[0]
+                        : ""
                     );
+
+                    setCategory(expense.category);
+                    setPaymentMethod(expense.paymentMethod);
+
                   }}
                 >
                   <Pencil size={18}/>
@@ -221,6 +313,7 @@ export default function BudgetDetails() {
 
                     loadBudget();
                     loadExpenses();
+
                   }}
                 >
                   <Trash2 size={18}/>
@@ -239,6 +332,7 @@ export default function BudgetDetails() {
       {editingExpense && (
 
         <div className={styles.modalOverlay}>
+
           <div className={styles.modal}>
 
             <h2>Editar Gasto</h2>
@@ -260,6 +354,39 @@ export default function BudgetDetails() {
               onChange={(e)=>setDate(e.target.value)}
             />
 
+            <select
+              value={category}
+              onChange={(e)=>setCategory(e.target.value)}
+              required
+            >
+              <option value="">Selecione</option>
+              <option value="FOOD">Alimentação</option>
+              <option value="TRANSPORT">Transporte</option>
+              <option value="ENTERTAINMENT">Entretenimento</option>
+              <option value="HEALTH">Saúde</option>
+              <option value="BILLS">Contas</option>
+              <option value="EDUCATION">Educação</option>
+              <option value="TRAVEL">Viagem</option>
+              <option value="RENT">Aluguel</option>
+              <option value="SHOPPING">Compras</option>
+              <option value="INVESTMENTS">Investimentos</option>
+              <option value="SUBSCRIPTIONS">Assinaturas</option>
+              <option value="OTHER">Outro</option>
+            </select>
+
+            <select
+              value={paymentMethod}
+              onChange={(e)=>setPaymentMethod(e.target.value)}
+            >
+              <option value="">Selecione</option>
+              <option value="PIX">Pix</option>
+              <option value="CREDIT">Crédito</option>
+              <option value="DEBIT">Débito</option>
+              <option value="CASH">Dinheiro</option>
+              <option value="TRANSFER">Transferência</option>
+              <option value="OTHER">Outro</option>
+            </select>
+
             <div className={styles.modalActions}>
 
               <button
@@ -279,13 +406,17 @@ export default function BudgetDetails() {
                     {
                       title,
                       amount:Number(amount),
+                      category,
+                      paymentMethod,
                       expenseDate: date
                     }
                   );
 
                   setEditingExpense(null);
+
                   loadBudget();
                   loadExpenses();
+
                 }}
               >
                 Salvar
@@ -294,6 +425,7 @@ export default function BudgetDetails() {
             </div>
 
           </div>
+
         </div>
 
       )}

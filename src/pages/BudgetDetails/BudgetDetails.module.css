@@ -599,31 +599,70 @@ margin-bottom:10px;
 
 .modal input{
 width:100%;
-padding:16px;
-border-radius:18px;
-border:none;
+padding:18px 22px;
+border-radius:22px;
 outline:none;
 font-size:14px;
-transition:.2s;
+transition:.25s;
+backdrop-filter:blur(10px);
+border:1px solid transparent;
+}
+
+.modal select{
+width:100%;
+padding:18px 22px;
+border-radius:22px;
+outline:none;
+font-size:14px;
+transition:.25s;
+backdrop-filter:blur(10px);
+cursor:pointer;
+appearance:none;
+border:1px solid transparent;
 }
 
 /* DARK */
 
-body[data-theme="dark"] .modal input{
-background:rgba(0,0,0,.15);
-color:#0f172a;
+body[data-theme="dark"] .modal input,
+body[data-theme="dark"] .modal select{
+background:rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.25);
+color:white;
 }
 
 /* LIGHT */
 
-body[data-theme="light"] .modal input{
-background:rgba(255,255,255,.15);
+body[data-theme="light"] .modal input,
+body[data-theme="light"] .modal select{
+background:rgba(255,255,255,.18);
+border:1px solid rgba(255,255,255,.35);
 color:white;
 }
 
-.modal input:focus{
+.modal select:focus{
 transform:translateY(-2px);
-box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+body[data-theme="dark"] .modal input:focus,
+body[data-theme="dark"] .modal select:focus{
+border:1px solid #1e3a8a;
+box-shadow:0 0 0 3px rgba(30,58,138,.25);
+}
+
+body[data-theme="light"] .modal input:focus,
+body[data-theme="light"] .modal select:focus{
+border:1px solid #d4af37;
+box-shadow:0 0 0 3px rgba(212,175,55,.25);
+}
+
+body[data-theme="dark"] .modal select option{
+background:#1e3a8a;
+color:white;
+}
+
+body[data-theme="light"] .modal select option{
+background:#ffffff;
+color:#0f172a;
 }
 
 /* ACTIONS */
@@ -672,4 +711,111 @@ color:white;
 .save:hover,
 .cancel:hover{
 transform:translateY(-3px);
+}
+
+/* ================= SELECT GROUP ================= */
+
+.selectGroup{
+display:flex;
+flex-direction:column;
+gap:6px;
+min-width:200px;
+}
+
+/* LABEL DOS SELECTS */
+
+.selectGroup label{
+font-size:12px;
+font-weight:600;
+margin-bottom:4px;
+}
+
+/* DARK THEME */
+
+body[data-theme="dark"] .selectGroup label{
+color:#d4af37; /* dourado igual o resto do app */
+}
+
+/* LIGHT THEME */
+
+body[data-theme="light"] .selectGroup label{
+color:#1e3a8a; /* azul do tema claro */
+}
+
+/* ================= SELECT ================= */
+
+.selectGroup select{
+padding:18px 22px;
+border-radius:22px;
+outline:none;
+font-size:14px;
+transition:.25s;
+backdrop-filter:blur(10px);
+cursor:pointer;
+appearance:none;
+}
+
+/* DARK */
+
+body[data-theme="dark"] .selectGroup select{
+background:rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.25);
+color:white;
+}
+
+/* LIGHT */
+
+body[data-theme="light"] .selectGroup select{
+background:rgba(255,255,255,.18);
+border:1px solid rgba(255,255,255,.35);
+color:white;
+}
+
+/* ================= SELECT FOCUS ================= */
+
+.selectGroup select:focus{
+transform:translateY(-2px);
+}
+
+body[data-theme="dark"] .selectGroup select:focus{
+border:1px solid #1e3a8a;
+box-shadow:0 0 0 3px rgba(30,58,138,.25);
+}
+
+body[data-theme="light"] .selectGroup select:focus{
+border:1px solid #d4af37;
+box-shadow:0 0 0 3px rgba(212,175,55,.25);
+}
+
+/* ================= OPTIONS ================= */
+
+/* DARK */
+
+body[data-theme="dark"] .selectGroup select option{
+background:#1e3a8a;
+color:white;
+}
+
+/* LIGHT */
+
+body[data-theme="light"] .selectGroup select option{
+background:#ffffff;
+color:#0f172a;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width:768px){
+
+.selectGroup{
+width:100%;
+}
+
+.selectGroup select{
+width:100%;
+padding:16px 18px;
+border-radius:18px;
+font-size:15px;
+}
+
 }
