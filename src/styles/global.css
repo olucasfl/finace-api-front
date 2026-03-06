@@ -15,8 +15,7 @@ html {
 body {
   margin: 0;
 
-  font-family: "Inter", -apple-system, BlinkMacSystemFont,
-    "SF Pro Display", system-ui, sans-serif;
+  font-family: "Sora", system-ui, sans-serif;
 
   color: var(--text-primary);
 
