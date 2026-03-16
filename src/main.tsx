@@ -20,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
     </ThemeProvider>
   </StrictMode>
 );
+
 /* ============================= */
 /* PWA SERVICE WORKER */
 /* ============================= */
@@ -34,6 +35,10 @@ if ("serviceWorker" in navigator) {
 
       console.log("Service Worker registrado:", registration);
 
+      /* ============================= */
+      /* UPDATE DETECTION */
+      /* ============================= */
+
       registration.onupdatefound = () => {
 
         const newWorker = registration.installing;
@@ -44,17 +49,20 @@ if ("serviceWorker" in navigator) {
 
           if (newWorker.state === "installed") {
 
+            /* já existe SW controlando */
             if (navigator.serviceWorker.controller) {
 
               console.log("Nova versão do Smart Finance disponível");
 
-              const shouldUpdate = confirm(
-                "Uma nova versão do Smart Finance está disponível. Deseja atualizar?"
+              const shouldUpdate = window.confirm(
+                "Uma nova versão do Smart Finance está disponível.\nDeseja atualizar agora?"
               );
 
               if (shouldUpdate) {
 
-                newWorker.postMessage({ type: "SKIP_WAITING" });
+                newWorker.postMessage({
+                  type: "SKIP_WAITING"
+                });
 
               }
 
@@ -69,6 +77,10 @@ if ("serviceWorker" in navigator) {
         };
 
       };
+
+      /* ============================= */
+      /* WHEN NEW SW TAKES CONTROL */
+      /* ============================= */
 
       navigator.serviceWorker.addEventListener("controllerchange", () => {
 
