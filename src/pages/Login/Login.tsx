@@ -32,6 +32,24 @@ export default function Login() {
     document.documentElement.getAttribute("data-theme") || "light"
   );
 
+  /* ============================= */
+  /* AUTO LOGIN SE TOKEN EXISTIR */
+  /* ============================= */
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+      navigate("/dashboard");
+    }
+
+  }, [navigate]);
+
+  /* ============================= */
+  /* DETECTAR MUDANÇA DE TEMA */
+  /* ============================= */
+
   useEffect(() => {
 
     const observer = new MutationObserver(() => {
@@ -52,7 +70,10 @@ export default function Login() {
 
   }, []);
 
-  // detectar token de reset na URL
+  /* ============================= */
+  /* DETECTAR TOKEN RESET */
+  /* ============================= */
+
   useEffect(() => {
 
     const token = searchParams.get("resetToken");
@@ -62,7 +83,11 @@ export default function Login() {
       setResetOpen(true);
     }
 
-  }, []);
+  }, [searchParams]);
+
+  /* ============================= */
+  /* LOGIN */
+  /* ============================= */
 
   async function handleLogin(e: React.FormEvent) {
 
@@ -100,6 +125,10 @@ export default function Login() {
 
   }
 
+  /* ============================= */
+  /* REENVIAR VERIFICAÇÃO */
+  /* ============================= */
+
   async function resendEmail() {
 
     setResendLoading(true);
@@ -122,6 +151,10 @@ export default function Login() {
 
   }
 
+  /* ============================= */
+  /* ENVIAR EMAIL RESET */
+  /* ============================= */
+
   async function sendResetEmail() {
 
     try {
@@ -133,6 +166,7 @@ export default function Login() {
       alert("Email de recuperação enviado!");
 
       setForgotOpen(false);
+      setResetEmail("");
 
     } catch {
 
@@ -141,6 +175,10 @@ export default function Login() {
     }
 
   }
+
+  /* ============================= */
+  /* RESET SENHA */
+  /* ============================= */
 
   async function resetPassword() {
 
@@ -159,6 +197,8 @@ export default function Login() {
       alert("Senha alterada com sucesso!");
 
       setResetOpen(false);
+      setNewPassword("");
+      setConfirmPassword("");
 
     } catch {
 
@@ -254,7 +294,9 @@ export default function Login() {
                 onClick={resendEmail}
                 disabled={resendLoading}
               >
-                {resendLoading ? "Enviando..." : "Reenviar email de verificação"}
+                {resendLoading
+                  ? "Enviando..."
+                  : "Reenviar email de verificação"}
               </button>
             )}
 

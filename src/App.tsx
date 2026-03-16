@@ -7,34 +7,52 @@ import BudgetDetails from "./pages/BudgetDetails/BudgetDetails";
 import BudgetAnalytics from "./pages/BudgetAnalytics/BudgetAnalytics";
 
 function App() {
+
+  const token = localStorage.getItem("access_token");
+
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes>
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/"
+        element={
+          token
+            ? <Navigate to="/dashboard" replace />
+            : <Navigate to="/login" replace />
+        }
+      />
 
-        <Route
-          path="/budgets/:id"
-          element={
-            <ProtectedRoute>
-              <BudgetDetails />
-            </ProtectedRoute>
-          }
-        />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        <Route path="/budgets/:id/analytics" element={<BudgetAnalytics />} />
-      </Routes>
-    </>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/budgets/:id"
+        element={
+          <ProtectedRoute>
+            <BudgetDetails />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/budgets/:id/analytics"
+        element={
+          <ProtectedRoute>
+            <BudgetAnalytics />
+          </ProtectedRoute>
+        }
+      />
+
+    </Routes>
   );
 }
 

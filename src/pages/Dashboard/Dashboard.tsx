@@ -10,6 +10,7 @@ import {
 import type { Budget } from "../../services/budgetsService";
 import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
+import { logout } from "../../services/authService";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -83,7 +84,7 @@ export default function Dashboard() {
   }
 
   function handleLogout() {
-    navigate("/login");
+    logout()
   }
 
   return (
