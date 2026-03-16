@@ -1,0 +1,183 @@
+const CACHE_NAME = "smart-finance-cache-v1"
+
+/* ============================= */
+/* APP SHELL */
+/* ============================= */
+
+const APP_SHELL = [
+ "/",
+ "/index.html"
+]
+
+/* ============================= */
+/* INSTALL */
+/* ============================= */
+
+self.addEventListener("install", (event) => {
+
+ console.log("Smart Finance Service Worker instalado")
+
+ event.waitUntil(
+  caches.open(CACHE_NAME).then((cache) => {
+   return cache.addAll(APP_SHELL)
+  })
+ )
+
+ self.skipWaiting()
+
+})
+
+/* ============================= */
+/* ACTIVATE */
+/* ============================= */
+
+self.addEventListener("activate", (event) => {
+
+ console.log("Smart Finance Service Worker ativo")
+
+ event.waitUntil(
+  caches.keys().then((cacheNames) => {
+
+   return Promise.all(
+    cacheNames.map((cache) => {
+
+     if (cache !== CACHE_NAME) {
+      return caches.delete(cache)
+     }
+
+    })
+   )
+
+  })
+ )
+
+ self.clients.claim()
+
+})
+
+/* ============================= */
+/* UPDATE */
+/* ============================= */
+
+self.addEventListener("message", (event) => {
+
+ if (event.data && event.data.type === "SKIP_WAITING") {
+
+  console.log("Atualizando Service Worker")
+
+  self.skipWaiting()
+
+ }
+
+})
+
+/* ============================= */
+/* FETCH */
+/* ============================= */
+
+self.addEventListener("fetch", (event) => {
+
+ const request = event.request
+
+ if (request.method !== "GET") return
+
+ const url = new URL(request.url)
+
+ if (url.protocol !== "http:" && url.protocol !== "https:") {
+  return
+ }
+
+ /* ============================= */
+ /* NÃO CACHEAR API */
+ /* ============================= */
+
+ if (
+  url.pathname.startsWith("/auth") ||
+  url.pathname.startsWith("/budgets") ||
+  url.pathname.startsWith("/expenses") ||
+  url.origin.includes("render.com") ||
+  url.origin.includes("vercel.app")
+ ) {
+  return
+ }
+
+ /* ============================= */
+ /* NAVEGAÇÃO (React Router) */
+ /* ============================= */
+
+ if (
+  request.mode === "navigate" ||
+  request.destination === "document"
+ ) {
+
+  event.respondWith(
+
+   (async () => {
+
+    const cache = await caches.open(CACHE_NAME)
+
+    try {
+
+     const response = await fetch(request)
+
+     return response
+
+    } catch {
+
+     const cachedIndex =
+      await cache.match("/") ||
+      await cache.match("/index.html")
+
+     if (cachedIndex) return cachedIndex
+
+     return Response.error()
+
+    }
+
+   })()
+
+  )
+
+  return
+
+ }
+
+ /* ============================= */
+ /* CACHE ASSETS */
+/* ============================= */
+
+ const isAsset =
+  request.destination === "style" ||
+  request.destination === "script" ||
+  request.destination === "image" ||
+  request.destination === "font"
+
+ if (!isAsset) return
+
+ event.respondWith(
+
+  caches.open(CACHE_NAME).then(async (cache) => {
+
+   const cached = await cache.match(request)
+
+   if (cached) return cached
+
+   try {
+
+    const response = await fetch(request)
+
+    cache.put(request, response.clone())
+
+    return response
+
+   } catch {
+
+    return cached
+
+   }
+
+  })
+
+ )
+
+})

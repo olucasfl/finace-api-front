@@ -3,52 +3,90 @@
 
 <head>
 
-  <meta charset="UTF-8" />
+<meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+ name="viewport"
+ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+/>
 
-  <title>Smart Finance</title>
+<title>Smart Finance</title>
 
-  <meta name="description" content="Smart Finance - Controle seus gastos e organize seu orçamento de forma simples." />
+<meta name="description"
+ content="Smart Finance - Controle seus gastos e organize seu orçamento de forma simples."
+/>
 
-  <link rel="icon" type="image/png" sizes="64x64" href="/logo-SF-blue-512.png" />
+<meta name="theme-color" content="#0f172a">
+<meta name="color-scheme" content="dark light">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smart Finance">
 
-  <!-- APPLY THEME BEFORE REACT LOADS -->
-  <script>
-    (function () {
+<meta name="format-detection" content="telephone=no">
 
-      try {
+<!-- PWA -->
 
-        const savedTheme = localStorage.getItem("theme");
+<link rel="manifest" href="/manifest.json">
 
-        const theme =
-          savedTheme === "light" || savedTheme === "dark"
-            ? savedTheme
-            : "dark";
+<!-- FONTS PERFORMANCE -->
 
-        window.__initialTheme = theme;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-      } catch {
-        window.__initialTheme = "dark";
-      }
+<link
+ href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+ rel="stylesheet"
+>
 
-    })();
-  </script>
+<!-- ICONS -->
+
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png">
+
+<!-- APPLY THEME BEFORE REACT LOADS -->
+
+<script>
+(function () {
+
+  try {
+
+    const savedTheme = localStorage.getItem("theme");
+
+    const theme =
+      savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : "dark";
+
+    window.__initialTheme = theme;
+
+  } catch {
+    window.__initialTheme = "dark";
+  }
+
+})();
+</script>
 
 </head>
 
 <body>
 
-  <script>
-    document.body.setAttribute("data-theme", window.__initialTheme || "dark");
-  </script>
+<script>
+document.body.setAttribute("data-theme", window.__initialTheme || "dark");
+</script>
 
-  <div id="root"></div>
+<div id="root"></div>
 
-  <script type="module" src="/src/main.tsx"></script>
+<noscript>
+ Este aplicativo requer JavaScript para funcionar.
+</noscript>
+
+<script type="module" src="/src/main.tsx"></script>
 
 </body>
 

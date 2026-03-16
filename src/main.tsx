@@ -1,37 +1,88 @@
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { ThemeProvider } from "./contexts/ThemeContext";
+
 import "./styles/global.css";
+import "./styles/variables.css";
 
-function GlobalNumberFix() {
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      const active = document.activeElement as HTMLInputElement;
+import App from "./App";
 
-      if (active?.type === "number") {
-        e.preventDefault();
-      }
-    };
+/* ============================= */
+/* RENDER APP */
+/* ============================= */
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-    };
-  }, []);
-
-  return null;
-}
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <GlobalNumberFix />
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
-  </React.StrictMode>
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
 );
+
+/* ============================= */
+/* PWA SERVICE WORKER */
+/* ============================= */
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", async () => {
+
+    try {
+
+      const registration = await navigator.serviceWorker.register("/sw.js");
+
+      console.log("Service Worker registrado:", registration);
+
+      registration.onupdatefound = () => {
+
+        const newWorker = registration.installing;
+
+        if (!newWorker) return;
+
+        newWorker.onstatechange = () => {
+
+          if (newWorker.state === "installed") {
+
+            if (navigator.serviceWorker.controller) {
+
+              console.log("Nova versão do Smart Finance disponível");
+
+              const shouldUpdate = confirm(
+                "Uma nova versão do Smart Finance está disponível. Deseja atualizar?"
+              );
+
+              if (shouldUpdate) {
+
+                newWorker.postMessage({ type: "SKIP_WAITING" });
+
+              }
+
+            } else {
+
+              console.log("Smart Finance pronto para uso offline");
+
+            }
+
+          }
+
+        };
+
+      };
+
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+
+        console.log("Atualizando aplicação...");
+
+        window.location.reload();
+
+      });
+
+    } catch (error) {
+
+      console.error("Erro ao registrar Service Worker:", error);
+
+    }
+
+  });
+
+}
