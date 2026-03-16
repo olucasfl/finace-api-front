@@ -464,7 +464,89 @@ export default function BudgetDetails() {
 
       )}
 
-      {/* EDIT MODAL permanece igual */}
+      {editingExpense && (
+
+        <div className={styles.modalOverlay}>
+
+          <div className={styles.modal}>
+
+            <h2>Editar gasto</h2>
+
+            <input
+              placeholder="Título"
+              value={editTitle}
+              onChange={(e)=>setEditTitle(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Valor"
+              value={editAmount}
+              onChange={(e)=>setEditAmount(e.target.value)}
+            />
+
+            <input
+              type="date"
+              value={editDate}
+              onChange={(e)=>setEditDate(e.target.value)}
+            />
+
+            <select
+              value={editCategory}
+              onChange={(e)=>setEditCategory(e.target.value)}
+            >
+              {Object.entries(categoryLabels).map(([key,label])=>(
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+
+            <select
+              value={editPaymentMethod}
+              onChange={(e)=>setEditPaymentMethod(e.target.value)}
+            >
+              {Object.entries(paymentMethodLabels).map(([key,label])=>(
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+
+            <div className={styles.modalActions}>
+
+              <button
+                className={styles.cancel}
+                onClick={()=>setEditingExpense(null)}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className={styles.save}
+                onClick={async()=>{
+
+                  await updateExpense(budget!.id, editingExpense.id,{
+                    title:editTitle,
+                    amount:Number(editAmount),
+                    category:editCategory,
+                    paymentMethod:editPaymentMethod,
+                    expenseDate:editDate || undefined
+                  })
+
+                  setEditingExpense(null)
+
+                  loadBudget()
+                  loadExpenses()
+
+                }}
+              >
+                Salvar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );
