@@ -523,3 +523,48 @@ justify-content:space-between;
 }
 
 }
+
+/* FIX SELECT DROPDOWN */
+
+body[data-theme="dark"] select{
+background:#344673;
+color:white;
+}
+
+body[data-theme="dark"] select option{
+background:#1e2f5a;
+color:white;
+}
+
+body[data-theme="light"] select{
+background:#ffffff;
+color:#0f172a;
+}
+
+body[data-theme="light"] select option{
+background:#ffffff;
+color:#0f172a;
+}
+
+/* MODAL INPUTS */
+
+body[data-theme="dark"] .modal input,
+body[data-theme="dark"] .modal select{
+background:rgba(255,255,255,.9);
+border:1px solid rgba(0,0,0,.15);
+color:#0f172a;
+}
+
+body[data-theme="light"] .modal input,
+body[data-theme="light"] .modal select{
+background:#ffffff;
+border:1px solid rgba(0,0,0,.15);
+color:#0f172a;
+}
+
+select{
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+cursor:pointer;
+}
