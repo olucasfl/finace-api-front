@@ -488,10 +488,6 @@ calc(env(safe-area-inset-top) + 110px)
 40px;
 }
 
-.filterBar{
-margin-top:-60px;
-}
-
 .title{
 font-size:26px;
 margin-bottom:30px;

@@ -224,25 +224,6 @@ export default function BudgetDetails() {
         </div>
       </div>
 
-      {/* FILTER BUTTON */}
-
-      <div className={styles.filterBar}>
-        <button
-          className={styles.filterButton}
-          onClick={()=>setFiltersOpen(true)}
-        >
-          <Filter size={16}/>
-          Filtros
-
-          {activeFilters > 0 && (
-            <span className={styles.filterCount}>
-              {activeFilters}
-            </span>
-          )}
-
-        </button>
-      </div>
-
       {/* CREATE EXPENSE */}
 
       <div className={styles.section}>
@@ -310,6 +291,25 @@ export default function BudgetDetails() {
           </button>
 
         </form>
+      </div>
+
+      {/* FILTER BUTTON */}
+
+      <div className={styles.filterBar}>
+        <button
+          className={styles.filterButton}
+          onClick={()=>setFiltersOpen(true)}
+        >
+          <Filter size={16}/>
+          Filtros
+
+          {activeFilters > 0 && (
+            <span className={styles.filterCount}>
+              {activeFilters}
+            </span>
+          )}
+
+        </button>
       </div>
 
       {/* EXPENSE LIST */}
