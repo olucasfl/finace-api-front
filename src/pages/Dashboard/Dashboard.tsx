@@ -12,26 +12,36 @@ import { Pencil, Trash2, PlusCircle } from "lucide-react";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import { logout } from "../../services/authService";
 
+const STORAGE_KEY = "smart_finance_budgets";
+
 export default function Dashboard() {
+
   const navigate = useNavigate();
 
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [editingBudget, setEditingBudget] =
-    useState<Budget | null>(null);
+  const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
   const [creating, setCreating] = useState(false);
 
   const [name, setName] = useState("");
   const [limit, setLimit] = useState("");
 
   const [theme, setTheme] = useState(
-  document.documentElement.getAttribute("data-theme") || "light"
+    document.documentElement.getAttribute("data-theme") || "light"
   );
 
+  /* ============================= */
+  /* OBSERVAR MUDANÇA DE TEMA */
+  /* ============================= */
+
   useEffect(() => {
+
     const observer = new MutationObserver(() => {
+
       const currentTheme =
         document.documentElement.getAttribute("data-theme") || "light";
+
       setTheme(currentTheme);
+
     });
 
     observer.observe(document.documentElement, {
@@ -40,58 +50,156 @@ export default function Dashboard() {
     });
 
     return () => observer.disconnect();
+
   }, []);
 
-  async function loadBudgets() {
-    const data = await getBudgets();
-    setBudgets(data);
+  /* ============================= */
+  /* SALVAR CACHE */
+  /* ============================= */
+
+  function saveCache(data: Budget[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
 
+  /* ============================= */
+  /* CARREGAR CACHE */
+  /* ============================= */
+
+  function loadCache(): Budget[] {
+
+    const cached = localStorage.getItem(STORAGE_KEY);
+
+    if (!cached) return [];
+
+    try {
+      return JSON.parse(cached);
+    } catch {
+      return [];
+    }
+
+  }
+
+  /* ============================= */
+  /* CARREGAR BUDGETS */
+  /* ============================= */
+
+  async function loadBudgets() {
+
+    try {
+
+      const data = await getBudgets();
+
+      setBudgets(data);
+      saveCache(data);
+
+    } catch {
+
+      console.warn("API offline, usando cache local");
+
+      const cached = loadCache();
+
+      setBudgets(cached);
+
+    }
+
+  }
+
+  /* ============================= */
+  /* PRIMEIRO LOAD */
+  /* ============================= */
+
   useEffect(() => {
+
+    const cached = loadCache();
+
+    if (cached.length > 0) {
+      setBudgets(cached);
+    }
+
     loadBudgets();
+
   }, []);
 
+  /* ============================= */
+  /* CRIAR BUDGET */
+  /* ============================= */
+
   async function handleCreate() {
-    await createBudget({
+
+    const newBudget = await createBudget({
       name,
       limit: Number(limit),
     });
+
+    const updated = [...budgets, newBudget];
+
+    setBudgets(updated);
+    saveCache(updated);
 
     setName("");
     setLimit("");
     setCreating(false);
-    loadBudgets();
+
   }
 
+  /* ============================= */
+  /* ATUALIZAR BUDGET */
+  /* ============================= */
+
   async function handleUpdate() {
+
     if (!editingBudget) return;
 
-    await updateBudget(editingBudget.id, {
+    const updatedBudget = await updateBudget(editingBudget.id, {
       name,
       limit: Number(limit),
     });
 
+    const updated = budgets.map((b) =>
+      b.id === editingBudget.id ? updatedBudget : b
+    );
+
+    setBudgets(updated);
+    saveCache(updated);
+
     setEditingBudget(null);
-    loadBudgets();
+
   }
 
+  /* ============================= */
+  /* DELETAR BUDGET */
+  /* ============================= */
+
   async function handleDelete(id: string) {
+
     if (!confirm("Tem certeza que deseja excluir?"))
       return;
 
     await deleteBudget(id);
-    loadBudgets();
+
+    const updated = budgets.filter((b) => b.id !== id);
+
+    setBudgets(updated);
+    saveCache(updated);
+
   }
 
+  /* ============================= */
+  /* LOGOUT */
+  /* ============================= */
+
   function handleLogout() {
-    logout()
+    logout();
   }
 
   return (
     <div className={styles.container}>
+
       {/* BOTÕES SUPERIORES */}
+
       <div className={styles.topButtons}>
         <ThemeToggle />
+
         <button
           className={styles.logoutButton}
           onClick={handleLogout}
@@ -122,30 +230,30 @@ export default function Dashboard() {
 
       <div className={styles.grid}>
         {budgets.map((budget) => (
+
           <div
             key={budget.id}
             className={styles.card}
-            onClick={() =>
-              navigate(`/budgets/${budget.id}`)
-            }
+            onClick={() => navigate(`/budgets/${budget.id}`)}
           >
+
             <div className={styles.cardTop}>
+
               <h2>{budget.name}</h2>
 
               <div
                 className={styles.actions}
-                onClick={(e) =>
-                  e.stopPropagation()
-                }
+                onClick={(e) => e.stopPropagation()}
               >
+
                 <button
                   className={styles.editBtn}
                   onClick={() => {
+
                     setEditingBudget(budget);
                     setName(budget.name);
-                    setLimit(
-                      budget.limit.toString()
-                    );
+                    setLimit(budget.limit.toString());
+
                   }}
                 >
                   <Pencil size={18} />
@@ -153,13 +261,13 @@ export default function Dashboard() {
 
                 <button
                   className={styles.deleteBtn}
-                  onClick={() =>
-                    handleDelete(budget.id)
-                  }
+                  onClick={() => handleDelete(budget.id)}
                 >
                   <Trash2 size={18} />
                 </button>
+
               </div>
+
             </div>
 
             <div className={styles.amount}>
@@ -174,21 +282,27 @@ export default function Dashboard() {
               <div
                 className={styles.progress}
                 style={{
-                  width: `${
-                    (budget.totalSpent /
-                      budget.limit) *
+                  width: `${Math.min(
+                    (budget.totalSpent / budget.limit) * 100,
                     100
-                  }%`,
+                  )}%`,
                 }}
               />
             </div>
+
           </div>
+
         ))}
       </div>
-              {/* MODAL CRIAR */}
+
+      {/* MODAL CRIAR */}
+
       {creating && (
+
         <div className={styles.modalOverlay}>
+
           <div className={styles.modal}>
+
             <h2>Novo Budget</h2>
 
             <input
@@ -205,6 +319,7 @@ export default function Dashboard() {
             />
 
             <div className={styles.modalActions}>
+
               <button
                 className={styles.cancel}
                 onClick={() => setCreating(false)}
@@ -218,14 +333,23 @@ export default function Dashboard() {
               >
                 Criar
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       )}
 
-            {editingBudget && (
+      {/* MODAL EDITAR */}
+
+      {editingBudget && (
+
         <div className={styles.modalOverlay}>
+
           <div className={styles.modal}>
+
             <h2>Editar Budget</h2>
 
             <input
@@ -240,6 +364,7 @@ export default function Dashboard() {
             />
 
             <div className={styles.modalActions}>
+
               <button
                 className={styles.cancel}
                 onClick={() => setEditingBudget(null)}
@@ -253,10 +378,15 @@ export default function Dashboard() {
               >
                 Salvar
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       )}
+
     </div>
   );
 }
